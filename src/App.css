@@ -1,0 +1,585 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Instrument+Serif:ital@0;1&display=swap');
+
+@font-face {
+    font-family: 'FSHaskumo';
+    src: url('/fonts/FsHakumoRegular-V49Ky.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ZT Bros Oskon 90s';
+    src: url('/fonts/ZTBrosOskon90s-Light.otf') format('opentype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ZT Bros Oskon 90s';
+    src: url('/fonts/ZTBrosOskon90s-Regular.otf') format('opentype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+    background: #000;
+}
+
+body::before {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000'%3E%3Crect x='0' y='0' width='2' height='2' opacity='.94'/%3E%3Crect x='2' y='0' width='2' height='2' opacity='.29'/%3E%3Crect x='4' y='0' width='2' height='2' opacity='.76'/%3E%3Crect x='6' y='0' width='2' height='2' opacity='.06'/%3E%3Crect x='0' y='2' width='2' height='2' opacity='.41'/%3E%3Crect x='2' y='2' width='2' height='2' opacity='.65'/%3E%3Crect x='4' y='2' width='2' height='2' opacity='.18'/%3E%3Crect x='6' y='2' width='2' height='2' opacity='.53'/%3E%3Crect x='0' y='4' width='2' height='2' opacity='.82'/%3E%3Crect x='2' y='4' width='2' height='2' opacity='.12'/%3E%3Crect x='4' y='4' width='2' height='2' opacity='.88'/%3E%3Crect x='6' y='4' width='2' height='2' opacity='.24'/%3E%3Crect x='0' y='6' width='2' height='2' opacity='.35'/%3E%3Crect x='2' y='6' width='2' height='2' opacity='.59'/%3E%3Crect x='4' y='6' width='2' height='2' opacity='.47'/%3E%3Crect x='6' y='6' width='2' height='2' opacity='.71'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 8px 8px;
+    content: '';
+    image-rendering: pixelated;
+    mix-blend-mode: multiply;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+body::after {
+    position: fixed;
+    z-index: 105;
+    inset: -50%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.8'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 140px 140px;
+    content: '';
+    filter: contrast(180%);
+    mix-blend-mode: normal;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+#root {
+    overflow: hidden;
+    background: #000;
+}
+
+.hero-page {
+    display: grid;
+    place-items: center;
+    background: #000;
+}
+
+.black-page {
+    --about-navy: #0b2f4f;
+    --about-line: #294c68;
+    --about-white: #f7f5ef;
+    --about-muted: #8297a8;
+    position: fixed;
+    container-type: inline-size;
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
+    z-index: 102;
+    inset: 0;
+    margin: auto;
+    overflow: hidden;
+    background: var(--about-navy);
+    color: var(--about-white);
+    font-family: 'Instrument Serif', Didot, Georgia, serif;
+    font-weight: 300;
+    font-stretch: 105%;
+    letter-spacing: 0.035em;
+    transform: translate3d(0, var(--slide-offset, 100%), 0);
+    transition: transform 1s cubic-bezier(0.45, 0, 0.2, 1);
+    pointer-events: none;
+    will-change: transform;
+}
+
+.black-page.is-active {
+    pointer-events: auto;
+}
+
+.black-page.is-peeking {
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+}
+
+.black-page::before {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 60.9375%;
+    width: 34.75%;
+    background: #0b2b49;
+    content: '';
+    pointer-events: none;
+}
+
+.black-page::after {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4.6875%;
+    background: #0b2b49;
+    content: '';
+    pointer-events: none;
+}
+
+.about-geometry {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--about-line);
+    stroke-width: 3.5;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+    shape-rendering: geometricPrecision;
+}
+
+.golden-spiral {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.about-brand {
+    position: absolute;
+    z-index: 2;
+    top: 6.2%;
+    left: 3.1%;
+    width: 8cqw;
+    height: 3cqw;
+    overflow: hidden;
+}
+
+.about-brand img {
+    position: absolute;
+    top: -4.42cqw;
+    left: -2.54cqw;
+    width: 13cqw;
+    height: 13cqw;
+    display: block;
+}
+
+.about-back {
+    position: absolute;
+    z-index: 3;
+    top: 3.2%;
+    left: 50%;
+    width: 3.8cqw;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+.about-back svg {
+    display: block;
+    width: 100%;
+    fill: none;
+    stroke: var(--about-white);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 4;
+}
+
+.about-copy,
+.contact-panel {
+    position: absolute;
+    z-index: 2;
+}
+
+.about-copy {
+    top: 33%;
+    left: 20.2%;
+    width: 23%;
+}
+
+.about-copy h2,
+.contact-panel h2 {
+    margin: 0;
+    color: var(--about-white);
+    font-family: 'DM Serif Display', Didot, Georgia, serif;
+    font-size: 2.85cqw;
+    font-weight: 400;
+    line-height: 1;
+    transform: scaleX(1.04);
+    transform-origin: left center;
+}
+
+.about-copy h2 {
+    margin-left: 3.4cqw;
+    margin-bottom: 2.1cqw;
+}
+
+.about-copy p {
+    margin: 0 0 2.65cqw;
+    font-family: 'Instrument Serif', Didot, Georgia, serif;
+    font-size: 1.85cqw;
+    font-weight: 300;
+    line-height: 1.42;
+    transform: scaleX(1.04);
+    transform-origin: left center;
+}
+
+.contact-panel {
+    top: 21.8%;
+    left: 57%;
+    width: 28.5%;
+}
+
+.contact-panel h2 {
+    margin-left: 3.2cqw;
+    margin-bottom: 0.45cqw;
+}
+
+.contact-email {
+    margin: 0 0 1.3cqw 3.2cqw;
+    color: var(--about-muted);
+    font-family: 'Instrument Serif', Didot, Georgia, serif;
+    font-size: 0.9cqw;
+    font-weight: 300;
+    line-height: 1.2;
+    transform: scaleX(1.15);
+}
+
+.contact-panel form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-panel label {
+    width: 62%;
+    margin-left: 0;
+}
+
+.contact-panel label:nth-of-type(2) {
+    width: 80%;
+}
+
+.contact-panel input,
+.contact-panel textarea {
+    box-sizing: border-box;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid var(--about-muted);
+    border-radius: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--about-white);
+    font: inherit;
+    font-size: 1.35cqw;
+}
+
+.contact-panel input {
+    height: 3cqw;
+    padding: 0.45cqw 1.7cqw 0.1cqw;
+}
+
+.contact-panel input::placeholder,
+.contact-panel textarea::placeholder {
+    color: var(--about-muted);
+    opacity: 1;
+}
+
+.message-field {
+    position: relative;
+    width: 115%;
+    height: 11.8cqw;
+    margin-top: 0.25cqw;
+}
+
+.contact-panel textarea {
+    height: 100%;
+    padding: 0.65cqw 1.7cqw;
+    resize: none;
+    text-align: left;
+}
+
+.message-field > span {
+    position: absolute;
+    top: 7.6cqw;
+    left: 15.2cqw;
+    color: var(--about-muted);
+    font-size: 1.35cqw;
+    letter-spacing: 0.035em;
+    transform: scaleX(1.08);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.message-field textarea:not(:placeholder-shown) + span {
+    opacity: 0;
+}
+
+.contact-panel button {
+    align-self: flex-end;
+    margin-top: 1.15cqw;
+    margin-right: 2%;
+    padding: 0.45cqw 1.45cqw;
+    border: 2px solid var(--about-muted);
+    background: transparent;
+    color: var(--about-muted);
+    font: inherit;
+    font-family: 'DM Serif Display', Didot, Georgia, serif;
+    font-size: 1.25cqw;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.contact-panel input:focus,
+.contact-panel textarea:focus {
+    border-color: var(--about-white);
+}
+
+.contact-panel button:hover,
+.contact-panel button:focus-visible {
+    border-color: var(--about-white);
+    color: var(--about-white);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.main {
+    position: relative;
+    isolation: isolate;
+    container-type: inline-size;
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #fafafa;
+    background-image:
+        linear-gradient(rgba(133, 143, 150, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(133, 143, 150, 0.12) 1px, transparent 1px);
+    background-size: 5px 5px;
+}
+
+.main::before {
+    position: absolute;
+    z-index: 0;
+    bottom: -48%;
+    left: -9%;
+    width: 68%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0.28) 0 92%,
+        rgba(0, 0, 0, 0.18) 96%,
+        transparent 100%
+    );
+    filter: blur(20px);
+    -webkit-mask: radial-gradient(
+        circle,
+        transparent 0 31%,
+        rgba(0, 0, 0, 0.45) 34%,
+        #000 38% 100%
+    );
+    mask: radial-gradient(
+        circle,
+        transparent 0 31%,
+        rgba(0, 0, 0, 0.45) 34%,
+        #000 38% 100%
+    );
+    content: '';
+
+    pointer-events: none;
+}
+
+.top-disc {
+    position: absolute;
+    z-index: 0;
+
+    /* Change only these three values to resize or reposition this disc. */
+    top: -50%;
+    left: -2%;
+    width: 130%;
+
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    clip-path: inset(0 0 50% 0);
+    -webkit-mask: radial-gradient(
+        circle,
+        transparent 0 32%,
+        rgba(0, 0, 0, 0.45) 34%,
+        #000 37% 94%,
+        rgba(0, 0, 0, 0.45) 97%,
+        transparent 100%
+    );
+    mask: radial-gradient(
+        circle,
+        transparent 0 32%,
+        rgba(0, 0, 0, 0.45) 34%,
+        #000 37% 94%,
+        rgba(0, 0, 0, 0.45) 97%,
+        transparent 100%
+    );
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.scene {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.particle-overlay {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    pointer-events: none;
+}
+
+.particle-overlay,
+.particle-overlay * {
+    pointer-events: none !important;
+}
+
+.particle-overlay--inversion {
+    mix-blend-mode: difference;
+}
+
+.particle-overlay--color {
+    z-index: 5;
+}
+
+.main-nav {
+    position: absolute;
+    z-index: 3;
+    top: 2.5%;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    gap: min(2.25cqw, 2.75rem);
+}
+
+.main-nav a {
+    color: #131313;
+    font-family: 'FSHaskumo', sans-serif;
+    font-size: min(1.25cqw, 1.5rem);
+    line-height: 1;
+    text-decoration: none;
+    text-transform: lowercase;
+    transition: opacity 160ms ease;
+}
+
+.main-nav a:hover,
+.main-nav a:focus-visible {
+    opacity: 0.5;
+}
+
+.main-nav a:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.35em;
+}
+
+.title {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 60%;
+    width: min(48cqw, 760px);
+    margin: 0;
+    transform: translate(-50%, -50%) scaleX(85%);
+    color: #0b2f4f;
+    font-family: 'FSHaskumo', sans-serif;
+    font-size: min(7.8cqw, 10rem);
+    font-weight: 1;
+    line-height: 1;
+    text-align: center;
+    letter-spacing: -.05em;
+    pointer-events: none;
+}
+
+.title span {
+    display: block;
+}
+
+.title-inversion-mask {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    clip-path: circle(41.9% at 25% 87.55%);
+    pointer-events: none;
+}
+
+.title--inverted {
+    color: #fff;
+}
+
+.scroll-cue {
+    position: absolute;
+    z-index: 2;
+    bottom: 3%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: min(0.5cqw, 0.6rem);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+.title-arrow {
+    width: min(5cqw, 72px);
+    height: auto;
+    overflow: visible;
+    fill: none;
+    stroke: #2c2c2c;
+    stroke-width: 3.5;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+}
+
+.scroll-label {
+    color: #2c2c2c;
+    font-family: 'FSHaskumo', sans-serif;
+    font-size: min(0.833cqw, 2rem);
+    font-weight: 1200;
+    line-height: 1;
+    letter-spacing: 0.08em;
+}
+
+.portfolio-caption {
+    position: absolute;
+    z-index: 2;
+    right: 1%;
+    bottom: 2%;
+    width: 42%;
+    margin: 0;
+    color: #131313;
+    font-family: 'FSHaskumo', sans-serif;
+    font-size: min(1.8cqw, 2.22rem);
+    font-weight: 400;
+    line-height: 1;
+    text-align: right;
+}
