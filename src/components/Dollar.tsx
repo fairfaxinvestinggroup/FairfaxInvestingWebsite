@@ -544,7 +544,7 @@ export function Model(props: ThreeElements['group']) {
     targetPosition: THREE.Vector3
     pushDirection: THREE.Vector3
   }
-  const { nodes } = useGLTF('/models/dollar.glb') as unknown as GLTFResult
+  const { nodes } = useGLTF(`${import.meta.env.BASE_URL}models/dollar.glb`) as unknown as GLTFResult
   const groupRef = useRef<THREE.Group>(null)
   const meshesRef = useRef<AnimatedMesh[]>([])
   const rotationVelocity = useRef({
@@ -1302,4 +1302,4 @@ export function Model(props: ThreeElements['group']) {
   )
 }
 
-useGLTF.preload('/models/dollar.glb')
+useGLTF.preload(`${import.meta.env.BASE_URL}models/dollar.glb`)

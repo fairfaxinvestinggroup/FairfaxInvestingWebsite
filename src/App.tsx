@@ -286,7 +286,7 @@ export default function App() {
       >
         <div className="about-brand">
           <img
-            src="/images/FairfaxInvestingLogo.svg"
+            src={`${import.meta.env.BASE_URL}images/FairfaxInvestingLogo.svg`}
             alt="Fairfax Investing Group"
           />
         </div>
