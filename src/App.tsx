@@ -155,13 +155,6 @@ export default function App() {
         <a href="https://www.myiclub.com/club/public/fairfaxinvestinggroup" target="_blank">portfolio</a>
         <a href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0" target="_blank">research</a>
         <a href="https://medium.com/@fairfax.investing.group" target="_blank">reports</a>
-        <a
-          href="https://www.linkedin.com/company/fairfax-investing-group/posts/?feedView=all"
-          target="_blank"
-          rel="noreferrer"
-        >
-          linkedin
-        </a>
       </nav>
       <h1 className="title">
         <span>FAIRFAX</span>
