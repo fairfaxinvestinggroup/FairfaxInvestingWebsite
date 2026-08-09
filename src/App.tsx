@@ -1,3 +1,4 @@
+import { useForm } from '@formspree/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ClipboardEvent, CSSProperties } from 'react'
 import { Canvas} from '@react-three/fiber'
@@ -9,6 +10,7 @@ import { degToRad } from 'three/src/math/MathUtils.js'
 import './App.css'
 
 export default function App() {
+  const [state, handleSubmit] = useForm("mljrgvwr")
   const [secondScreenVisible, setSecondScreenVisible] = useState(false)
   const [peekProgress, setPeekProgress] = useState(0)
   const [aboutPageReady, setAboutPageReady] = useState(false)
@@ -342,17 +344,24 @@ export default function App() {
         </article>
 
         <section className="contact-panel" aria-labelledby="contact-heading">
+          
           <h2 id="contact-heading">Contact Us</h2>
           <p className="contact-email">
             or email us at fairfax.investing.group@gmail.com
           </p>
-          <form autoComplete="off" data-1p-ignore data-lpignore="true">
+          
+          <form
+  onSubmit={handleSubmit}
+  autoComplete="off"
+  data-1p-ignore
+  data-lpignore="true"
+>
             <label>
               <span className="sr-only">Your email</span>
               <input
                 type="text"
                 inputMode="email"
-                name="contact-field-a"
+                name="email"
                 placeholder="your email"
                 autoComplete="one-time-code"
                 data-1p-ignore
@@ -364,7 +373,7 @@ export default function App() {
               <span className="sr-only">Your name</span>
               <input
                 type="text"
-                name="contact-field-b"
+                name="name"
                 placeholder="your name"
                 autoComplete="one-time-code"
                 data-1p-ignore
@@ -375,7 +384,7 @@ export default function App() {
             <div className="message-field">
               <textarea
                 aria-label="Your message"
-                name="contact-field-c"
+                name="message"
                 placeholder=" "
                 autoComplete="off"
                 data-1p-ignore
@@ -384,7 +393,14 @@ export default function App() {
               />
               <span aria-hidden="true">. . .</span>
             </div>
-            <button type="button">send</button>
+            <button type="submit" disabled={state.submitting}>
+  {state.submitting ? 'sending...' : 'send'}
+</button>
+
+{state.succeeded && (
+  <p className="form-success">Message sent. Thank you.</p>
+)}
+
           </form>
         </section>
       </section>
