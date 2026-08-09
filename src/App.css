@@ -81,22 +81,29 @@ body::after {
     --about-line: #294c68;
     --about-white: #f7f5ef;
     --about-muted: #8297a8;
+
     position: fixed;
-    container-type: inline-size;
-    width: min(100vw, calc(100vh * 16 / 9));
-    height: min(100vh, calc(100vw * 9 / 16));
     z-index: 102;
     inset: 0;
-    margin: auto;
+
+    width: 100vw;
+    height: 100vh;
+
+    container-type: size;
+    margin: 0;
     overflow: hidden;
+
     background: var(--about-navy);
     color: var(--about-white);
+
     font-family: 'Instrument Serif', Didot, Georgia, serif;
     font-weight: 300;
     font-stretch: 105%;
     letter-spacing: 0.035em;
+
     transform: translate3d(0, var(--slide-offset, 100%), 0);
     transition: transform 1s cubic-bezier(0.45, 0, 0.2, 1);
+
     pointer-events: none;
     will-change: transform;
 }
@@ -366,15 +373,18 @@ body::after {
 .main {
     position: relative;
     isolation: isolate;
-    container-type: inline-size;
-    width: min(100vw, calc(100vh * 16 / 9));
-    height: min(100vh, calc(100vw * 9 / 16));
-    aspect-ratio: 16 / 9;
+    container-type: size;
+
+    width: 100vw;
+    height: 100vh;
+
     overflow: hidden;
+
     background-color: #fafafa;
     background-image:
         linear-gradient(rgba(133, 143, 150, 0.12) 1px, transparent 1px),
         linear-gradient(90deg, rgba(133, 143, 150, 0.12) 1px, transparent 1px);
+
     background-size: 5px 5px;
 }
 
@@ -525,7 +535,13 @@ body::after {
     position: absolute;
     z-index: 2;
     inset: 0;
-    clip-path: circle(41.9% at 25% 87.55%);
+
+    clip-path: circle(
+        34cqw at
+        25cqw
+        calc(148cqh - 34cqw)
+    );
+
     pointer-events: none;
 }
 
