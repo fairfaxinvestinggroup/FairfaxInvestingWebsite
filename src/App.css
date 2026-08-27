@@ -480,6 +480,11 @@ body::after {
     transition: filter 280ms ease;
 }
 
+.team-deck:not(.is-animating) .team-card:hover .team-card__portrait img,
+.team-deck:not(.is-animating) .team-card:focus-visible .team-card__portrait img {
+    filter: grayscale(0) saturate(.9) contrast(1.04);
+}
+
 .team-card__copy {
     position: absolute;
     right: 0;

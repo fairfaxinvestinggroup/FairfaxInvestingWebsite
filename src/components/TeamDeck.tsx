@@ -303,7 +303,7 @@ export function TeamDeck() {
         onMouseLeave={() => hover(false)}
         aria-expanded={dealt}
       >
-        <span>{dealt ? 'Return the cards' : 'Meet Our Team'}</span>
+        <span>{dealt ? 'return the cards' : 'meet our team'}</span>
       </button>
     </div>
   )
