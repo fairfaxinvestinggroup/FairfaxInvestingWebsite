@@ -245,14 +245,14 @@ export default function App() {
     href="https://www.myiclub.com/club/public/fairfaxinvestinggroup"
     target="_blank"
   >
-    portfolio
+    portal
   </a>
 
   <a
     href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0"
     target="_blank"
   >
-    research
+    dashboard
   </a>
 
   <a
@@ -263,8 +263,8 @@ export default function App() {
   </a>
 </nav>
       <nav className="main-nav" aria-label="Primary navigation">
-        <a href="https://www.myiclub.com/club/public/fairfaxinvestinggroup" target="_blank">portfolio</a>
-        <a href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0" target="_blank">research</a>
+        <a href="https://www.myiclub.com/club/public/fairfaxinvestinggroup" target="_blank">portal</a>
+        <a href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0" target="_blank">dashboard</a>
         <a href="https://medium.com/@fairfax.investing.group" target="_blank">reports</a>
       </nav>
       <h1 className="title">
