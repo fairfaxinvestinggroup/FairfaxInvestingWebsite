@@ -4,6 +4,7 @@ import type { ClipboardEvent, CSSProperties } from 'react'
 import { Canvas} from '@react-three/fiber'
 import { Model } from './components/Dollar'
 import { SquareParticles } from './components/SquareParticles'
+import { TeamDeck } from './components/TeamDeck'
 import { EffectComposer } from '@react-three/postprocessing'
 import { DitherEffect } from './effects/DitherEffect'
 import { degToRad } from 'three/src/math/MathUtils.js'
@@ -400,10 +401,8 @@ export default function App() {
           preserveAspectRatio="none"
           aria-hidden="true"
         >
-          {/* A 1456 × 900 golden rectangle (approximately φ:1). */}
           <rect x="75" y="0" width="1456" height="900" />
 
-          {/* Successive Fibonacci-square subdivisions. */}
           <path d="M975 0V900" />
           <path d="M975 556H1531" />
           <path d="M1187 556V900" />
@@ -415,7 +414,6 @@ export default function App() {
           <path d="M1124 660V688" />
           <path d="M1124 677H1135" />
 
-          {/* One continuous path prevents seams between the spiral arcs. */}
           <path
             className="golden-spiral"
             d="
@@ -451,6 +449,8 @@ export default function App() {
           <p>We’d love to meet you! Please reach out.</p>
         </article>
 
+        <TeamDeck />
+
         <section className="contact-panel" aria-labelledby="contact-heading">
           
           <h2 id="contact-heading">Contact Us</h2>
@@ -458,12 +458,12 @@ export default function App() {
             or email us at fairfax.investing.group@gmail.com
           </p>
           
-          <form
-  onSubmit={handleSubmit}
-  autoComplete="off"
-  data-1p-ignore
-  data-lpignore="true"
->
+            <form
+              onSubmit={handleSubmit}
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+            >
             <label>
               <span className="sr-only">Your email</span>
               <input
