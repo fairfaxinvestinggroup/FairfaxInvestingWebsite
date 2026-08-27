@@ -599,3 +599,222 @@ body::after {
     line-height: 1;
     text-align: right;
 }
+
+/* ─────────────────────────────────────────────
+   BROKERAGE STATEMENTS
+───────────────────────────────────────────── */
+
+.brokerage-statements {
+    position: absolute;
+    z-index: 10;
+
+    top: 2.5%;
+    left: 2%;
+
+    box-sizing: border-box;
+    width: min(24cqw, 380px);
+
+    /* Completely invisible container while closed */
+    padding: 0;
+    background: transparent;
+
+    font-family: 'FSHaskumo', sans-serif;
+
+    transition:
+        padding 1.1s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+
+/* Add spacing around everything only when opened */
+
+.brokerage-statements.is-open {
+    padding: 1.2rem;
+}
+
+
+/* Navy panel */
+
+.brokerage-statements::before {
+    position: absolute;
+    z-index: 0;
+
+    inset: 0;
+
+    background: #0b2f4f;
+
+    content: '';
+
+    transform: scaleY(0);
+    transform-origin: top center;
+
+    transition:
+        transform 1.1s cubic-bezier(0.76, 0, 0.24, 1);
+
+    pointer-events: none;
+}
+
+
+/* Panel expands top → bottom */
+
+.brokerage-statements.is-open::before {
+    transform: scaleY(1);
+}
+
+
+/* ───────── BUTTON ───────── */
+
+.brokerage-statements-button {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    width: auto;
+
+    gap: 0.7rem;
+
+    padding: 0;
+
+    border: 0;
+    outline: 0;
+    background: transparent;
+
+    color: #131313;
+
+    font-family: 'FSHaskumo', sans-serif;
+    font-size: min(1.25cqw, 1.5rem);
+
+    line-height: 1;
+    text-transform: lowercase;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        color 700ms ease,
+        opacity 200ms ease;
+}
+
+
+.brokerage-statements-button:hover {
+    opacity: 0.55;
+}
+
+
+/* Heading becomes grey only when opened */
+
+.brokerage-statements.is-open
+.brokerage-statements-button {
+    color: #d7d9d8;
+}
+
+
+/* Arrow */
+
+.brokerage-statements-arrow {
+    margin-left: 0.25rem;
+    font-size: 0.75em;
+}
+
+
+/* ───────── STATEMENT LIST ───────── */
+
+.brokerage-statements-menu {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    /* CLOSED */
+    max-height: 0;
+    margin-top: 0;
+
+    opacity: 0;
+    overflow: hidden;
+
+    transform: translateY(-14px);
+
+    transition:
+        max-height 1.1s cubic-bezier(0.76, 0, 0.24, 1),
+        margin-top 1.1s cubic-bezier(0.76, 0, 0.24, 1),
+        transform 1.1s cubic-bezier(0.76, 0, 0.24, 1),
+        opacity 650ms ease;
+}
+
+
+/* OPEN */
+
+.brokerage-statements-menu.is-open {
+    max-height: 400px;
+    margin-top: 1.5rem;
+
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* ───────── PDF ROWS ───────── */
+
+.brokerage-statements-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+    width: 100%;
+
+    padding: 0.8rem 0;
+
+    color: #f7f5ef;
+
+    font-family: 'FSHaskumo', sans-serif;
+    font-size: min(0.85cqw, 1rem);
+
+    line-height: 1;
+    text-decoration: none;
+
+    border-bottom:
+        1px solid rgba(247, 245, 239, 0.22);
+
+    transition:
+        padding-left 200ms ease,
+        background 200ms ease;
+}
+
+
+.brokerage-statements-menu a:first-child {
+    border-top:
+        1px solid rgba(247, 245, 239, 0.4);
+}
+
+
+/* PDF ↗ */
+
+.brokerage-statements-menu a::after {
+    content: 'PDF ↗';
+
+    color: #aeb8c0;
+
+    font-size: 0.65em;
+    letter-spacing: 0.08em;
+
+    transition: color 200ms ease;
+}
+
+
+.brokerage-statements-menu a:hover {
+    padding-left: 0.4rem;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+}
+
+
+.brokerage-statements-menu a:hover::after {
+    color: #f7f5ef;
+}

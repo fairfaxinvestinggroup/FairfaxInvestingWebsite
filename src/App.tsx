@@ -11,6 +11,7 @@ import './App.css'
 
 export default function App() {
   const [state, handleSubmit] = useForm("mljrgvwr")
+  const [statementsOpen, setStatementsOpen] = useState(false)
   const [secondScreenVisible, setSecondScreenVisible] = useState(false)
   const [peekProgress, setPeekProgress] = useState(0)
   const [aboutPageReady, setAboutPageReady] = useState(false)
@@ -152,7 +153,114 @@ export default function App() {
     () => (
       <section className="hero-page">
         <main className="main">
-      <div className="top-disc" aria-hidden="true" />
+<div className="top-disc" aria-hidden="true" />
+
+<div
+  className={`brokerage-statements${
+    statementsOpen ? ' is-open' : ''
+  }`}
+>
+  <button
+    type="button"
+    className="brokerage-statements-button"
+    onClick={() => setStatementsOpen((open) => !open)}
+    aria-expanded={statementsOpen}
+  >
+    brokerage statements
+
+    <span
+      className={`brokerage-statements-arrow${
+        statementsOpen ? ' is-open' : ''
+      }`}
+    >
+      ▾
+    </span>
+  </button>
+
+  <div
+    className={`brokerage-statements-menu${
+      statementsOpen ? ' is-open' : ''
+    }`}
+  >
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-07.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      7/31/26
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-06.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      6/30/26
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-05.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      5/31/26
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-04.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      4/30/26
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-03.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      3/31/26
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-02.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      2/28/26
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}statements/2026-01.pdf`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      1/31/26
+    </a>
+  </div>
+</div>
+<nav className="main-nav" aria-label="Primary navigation">
+  <a
+    href="https://www.myiclub.com/club/public/fairfaxinvestinggroup"
+    target="_blank"
+  >
+    portfolio
+  </a>
+
+  <a
+    href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0"
+    target="_blank"
+  >
+    research
+  </a>
+
+  <a
+    href="https://medium.com/@fairfax.investing.group"
+    target="_blank"
+  >
+    reports
+  </a>
+</nav>
       <nav className="main-nav" aria-label="Primary navigation">
         <a href="https://www.myiclub.com/club/public/fairfaxinvestinggroup" target="_blank">portfolio</a>
         <a href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0" target="_blank">research</a>
@@ -252,8 +360,8 @@ export default function App() {
         </main>
       </section>
     ),
-    [showAboutPage],
-  )
+[showAboutPage, statementsOpen],
+)
 
   return (
     <>
