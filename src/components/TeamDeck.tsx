@@ -6,26 +6,30 @@ const team = [
   {
     name: 'Titus Er',
     role: 'General Partner · Co-Founder',
-    detail: 'Columbia University · President',
+    detail: 'University of Virginia · President',
     image: `${import.meta.env.BASE_URL}images/Titus.JPEG`,
+    linkedin: 'https://www.linkedin.com/in/titus-er-3b545a321/',
   },
   {
     name: 'Claire Mo',
     role: 'General Partner · Co-Founder',
-    detail: 'University of Virginia · Vice-President',
+    detail: 'Columbia University · Vice-President',
     image: `${import.meta.env.BASE_URL}images/Claire.JPEG`,
+    linkedin: 'https://www.linkedin.com/in/claire-mo-3495343a8/',
   },
   {
     name: 'Thomas Duong',
     role: 'General Partner · Co-Founder',
-    detail: 'Columbia University · Treasurer',
+    detail: 'University of Virginia · Treasurer',
     image: `${import.meta.env.BASE_URL}images/Thomas.JPEG`,
+    linkedin: 'https://www.linkedin.com/in/thomas-duong-5355963a8/',
   },
   {
     name: 'Kyle Li',
     role: 'General Partner · Co-Founder',
-    detail: 'University of Virginia · Secretary',
+    detail: 'Columbia University · Secretary',
     image: `${import.meta.env.BASE_URL}images/Kyle.JPEG`,
+    linkedin: 'https://www.linkedin.com/in/kyle-li-869a1233a/',
   },
 ]
 
@@ -214,6 +218,11 @@ export function TeamDeck() {
     })
   }
 
+  const openLinkedIn = (url: string) => {
+    if (!dealtRef.current) return
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <div className={`team-deck${dealt ? ' is-dealt' : ''}`} ref={root}>
       <div className="team-cards" aria-live="polite">
@@ -224,6 +233,15 @@ export function TeamDeck() {
             ref={(node) => { cardRefs.current[index] = node }}
             onMouseEnter={() => hoverCard(index, true)}
             onMouseLeave={() => hoverCard(index, false)}
+            onClick={() => openLinkedIn(member.linkedin)}
+            onKeyDown={(event) => {
+              if (!dealtRef.current || (event.key !== 'Enter' && event.key !== ' ')) return
+              event.preventDefault()
+              openLinkedIn(member.linkedin)
+            }}
+            role={dealt ? 'link' : undefined}
+            tabIndex={dealt ? 0 : -1}
+            aria-label={dealt ? `Open ${member.name}'s LinkedIn profile` : undefined}
             style={{
               '--card-index': index,
               '--fan-x': `${fan[index].x}px`,

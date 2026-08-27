@@ -399,6 +399,15 @@ body::after {
     will-change: transform, box-shadow;
 }
 
+.team-deck.is-dealt .team-card {
+    cursor: pointer;
+}
+
+.team-deck.is-dealt .team-card:focus-visible {
+    outline: 2px solid var(--about-white);
+    outline-offset: 5px;
+}
+
 .team-card::before,
 .team-card::after {
     position: absolute;
