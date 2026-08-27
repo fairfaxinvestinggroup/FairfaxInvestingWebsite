@@ -534,7 +534,7 @@ body::after {
 
 .team-deal-button {
     position: absolute;
-    bottom: clamp(72px, 7vw, 112px);
+    bottom: clamp(72px, 8vw, 112px);
     left: clamp(24px, 4vw, 72px);
     width: auto;
     padding: .45cqw 1.45cqw;
