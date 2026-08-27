@@ -399,7 +399,7 @@ body::after {
     will-change: transform, box-shadow;
 }
 
-.team-deck.is-dealt .team-card {
+.team-deck.is-dealt:not(.is-animating) .team-card {
     cursor: pointer;
 }
 
@@ -466,9 +466,15 @@ body::after {
     width: 100%;
     height: 72%;
     object-fit: cover;
-    object-position: center top;
-    filter: saturate(.72) contrast(1.06);
+    object-position: center 20%;
+    filter: grayscale(1) contrast(1.06);
     background: #8095a4;
+    transition: filter 280ms ease;
+}
+
+.team-deck:not(.is-animating) .team-card:hover img,
+.team-deck:not(.is-animating) .team-card:focus-visible img {
+    filter: grayscale(0) saturate(.9) contrast(1.04);
 }
 
 .team-card__copy {

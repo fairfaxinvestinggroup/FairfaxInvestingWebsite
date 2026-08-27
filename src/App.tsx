@@ -295,13 +295,14 @@ export default function App() {
         <span className="scroll-label">scroll</span>
       </button>
       <p className="portfolio-caption">
-        12,000USD portfolio based in value-investing principals.
+        ~13,000USD portfolio based in value-investing principals.
       </p>
       <div
         className="particle-overlay particle-overlay--inversion"
         aria-hidden="true"
       >
         <Canvas
+          frameloop={aboutPageReady ? 'never' : 'always'}
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={1}
           gl={{
@@ -322,6 +323,7 @@ export default function App() {
         aria-hidden="true"
       >
         <Canvas
+          frameloop={aboutPageReady ? 'never' : 'always'}
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={1}
           gl={{
@@ -335,6 +337,7 @@ export default function App() {
       </div>
       <div className="scene">
         <Canvas 
+          frameloop={aboutPageReady ? 'never' : 'always'}
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={[1, 1.25]}
           gl={{
@@ -361,7 +364,7 @@ export default function App() {
         </main>
       </section>
     ),
-[showAboutPage, statementsOpen],
+[aboutPageReady, showAboutPage, statementsOpen],
 )
 
   return (

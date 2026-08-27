@@ -7,28 +7,28 @@ const team = [
     name: 'Titus Er',
     role: 'General Partner · Co-Founder',
     detail: 'University of Virginia · President',
-    image: `${import.meta.env.BASE_URL}images/Titus.JPEG`,
+    image: `${import.meta.env.BASE_URL}images/Titus-card.jpg`,
     linkedin: 'https://www.linkedin.com/in/titus-er-3b545a321/',
   },
   {
     name: 'Claire Mo',
     role: 'General Partner · Co-Founder',
     detail: 'Columbia University · Vice-President',
-    image: `${import.meta.env.BASE_URL}images/Claire.JPEG`,
+    image: `${import.meta.env.BASE_URL}images/Claire-card.jpg`,
     linkedin: 'https://www.linkedin.com/in/claire-mo-3495343a8/',
   },
   {
     name: 'Thomas Duong',
     role: 'General Partner · Co-Founder',
     detail: 'University of Virginia · Treasurer',
-    image: `${import.meta.env.BASE_URL}images/Thomas.JPEG`,
+    image: `${import.meta.env.BASE_URL}images/Thomas-card.jpg`,
     linkedin: 'https://www.linkedin.com/in/thomas-duong-5355963a8/',
   },
   {
     name: 'Kyle Li',
     role: 'General Partner · Co-Founder',
     detail: 'Columbia University · Secretary',
-    image: `${import.meta.env.BASE_URL}images/Kyle.JPEG`,
+    image: `${import.meta.env.BASE_URL}images/Kyle-card.jpg`,
     linkedin: 'https://www.linkedin.com/in/kyle-li-869a1233a/',
   },
 ]
@@ -52,7 +52,11 @@ export function TeamDeck() {
   const cardRefs = useRef<Array<HTMLElement | null>>([])
   const timeline = useRef<gsap.core.Timeline | null>(null)
   const [dealt, setDealt] = useState(false)
+  const [returning, setReturning] = useState(false)
+  const [animating, setAnimating] = useState(false)
   const dealtRef = useRef(false)
+  const returningRef = useRef(false)
+  const animatingRef = useRef(false)
 
   const placeFan = (immediate = false) => {
     cardRefs.current.forEach((card, index) => {
@@ -85,7 +89,7 @@ export function TeamDeck() {
     }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  })
+  }, [])
 
   const getLanding = (card: HTMLElement, index: number) => {
     const rootRect = root.current!.getBoundingClientRect()
@@ -130,7 +134,14 @@ export function TeamDeck() {
       return
     }
 
-    const tl = gsap.timeline()
+    animatingRef.current = true
+    setAnimating(true)
+    const tl = gsap.timeline({
+      onComplete: () => {
+        animatingRef.current = false
+        setAnimating(false)
+      },
+    })
     timeline.current = tl
 
     order.forEach((index, sequence) => {
@@ -155,14 +166,24 @@ export function TeamDeck() {
     })
 
     dealtRef.current = true
+    returningRef.current = false
+    setReturning(false)
     setDealt(true)
   }
 
   const gather = () => {
     timeline.current?.kill()
+    returningRef.current = true
+    animatingRef.current = true
+    setReturning(true)
+    setAnimating(true)
     timeline.current = gsap.timeline({
       onComplete: () => {
         dealtRef.current = false
+        returningRef.current = false
+        animatingRef.current = false
+        setReturning(false)
+        setAnimating(false)
         setDealt(false)
       },
     })
@@ -200,7 +221,7 @@ export function TeamDeck() {
 
   const hoverCard = (index: number, hovering: boolean) => {
     const card = cardRefs.current[index]
-    if (!card) return
+    if (!card || animatingRef.current) return
     const target = dealtRef.current
       ? getLanding(card, index)
       : {
@@ -228,7 +249,10 @@ export function TeamDeck() {
   }
 
   return (
-    <div className={`team-deck${dealt ? ' is-dealt' : ''}`} ref={root}>
+    <div
+      className={`team-deck${dealt ? ' is-dealt' : ''}${returning ? ' is-returning' : ''}${animating ? ' is-animating' : ''}`}
+      ref={root}
+    >
       <div className="team-cards" aria-live="polite">
         {team.map((member, index) => (
           <article
@@ -255,7 +279,11 @@ export function TeamDeck() {
           >
             <div className="team-card__frame">
               <span className="team-card__number">0{index + 1}</span>
-              <img src={member.image} alt={`${member.name}, ${member.role}`} />
+              <img
+                src={member.image}
+                alt={`${member.name}, ${member.role}`}
+                decoding="async"
+              />
               <div className="team-card__copy">
                 <p>{member.role}</p>
                 <h3>{member.name}</h3>
