@@ -233,7 +233,6 @@ export function TeamDeck() {
       y: hovering ? target.y - 10 : target.y,
       rotationZ: hovering ? target.rotation * 0.65 : target.rotation,
       scale: hovering ? 1.025 : 1,
-      zIndex: hovering ? 40 : 20 + index,
       boxShadow: hovering
         ? '0 8px 16px rgba(0,0,0,.18), 0 22px 40px rgba(0,0,0,.26)'
         : '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
@@ -279,11 +278,13 @@ export function TeamDeck() {
           >
             <div className="team-card__frame">
               <span className="team-card__number">0{index + 1}</span>
-              <img
-                src={member.image}
-                alt={`${member.name}, ${member.role}`}
-                decoding="async"
-              />
+              <div className="team-card__portrait">
+                <img
+                  src={member.image}
+                  alt={`${member.name}, ${member.role}`}
+                  decoding="async"
+                />
+              </div>
               <div className="team-card__copy">
                 <p>{member.role}</p>
                 <h3>{member.name}</h3>
