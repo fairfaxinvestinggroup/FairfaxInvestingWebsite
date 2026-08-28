@@ -98,7 +98,7 @@ export function TeamDeck() {
     const cardHeight = card.offsetHeight
     const mobile = rootRect.width < 700
     const xPercent = mobile ? [0.24, 0.76, 0.24, 0.76][index] : [0.19, 0.4, 0.62, 0.83][index]
-    const yPercent = mobile ? [0.27, 0.27, 0.69, 0.69][index] : [0.5, 0.46, 0.49, 0.48][index]
+    const yPercent = mobile ? [0.32, 0.32, 0.66, 0.66][index] : [0.5, 0.46, 0.49, 0.48][index]
 
     return {
       x:
@@ -107,7 +107,7 @@ export function TeamDeck() {
       y:
         rootRect.top + rootRect.height * yPercent
         - deckRect.top - cardHeight / 2,
-      rotation: [-3, -1, 3, 7][index],
+      rotation: (mobile ? [-3, -1, 3, -4] : [-3, -1, 3, 7])[index],
     }
   }
 
