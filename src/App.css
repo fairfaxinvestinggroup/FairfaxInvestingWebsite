@@ -245,38 +245,58 @@ body::after {
 }
 
 .contact-panel {
-    top: 21.8%;
-    left: 57%;
-    width: 28.5%;
+    top: 18.5%;
+    left: 56.5%;
+    width: 33%;
 }
 
 .contact-panel h2 {
-    margin-left: 3.2cqw;
-    margin-bottom: 0.45cqw;
+    margin-left: 0;
+    margin-bottom: 0.35cqw;
 }
 
 .contact-email {
-    margin: 0 0 1.3cqw 3.2cqw;
+    box-sizing: border-box;
+    width: 86%;
+    margin: 0 0 1.35cqw;
     color: var(--about-muted);
     font-family: 'Instrument Serif', Didot, Georgia, serif;
     font-size: 0.9cqw;
     font-weight: 300;
     line-height: 1.2;
     transform: scaleX(1.15);
+    transform-origin: left center;
+}
+
+.contact-email a {
+    color: inherit;
+    text-decoration-color: rgba(130, 151, 168, 0.65);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+.contact-email a:hover,
+.contact-email a:focus-visible {
+    color: var(--about-white);
+    text-decoration-color: var(--about-white);
+    outline: 0;
 }
 
 .contact-panel form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .contact-panel label {
-    width: 62%;
+    width: 72%;
     margin-left: 0;
 }
 
 .contact-panel label:nth-of-type(2) {
-    width: 80%;
+    width: 86%;
+    margin-top: 0.15cqw;
 }
 
 .contact-panel input,
@@ -291,11 +311,12 @@ body::after {
     color: var(--about-white);
     font: inherit;
     font-size: 1.35cqw;
+    transition: border-color 180ms ease;
 }
 
 .contact-panel input {
-    height: 3cqw;
-    padding: 0.45cqw 1.7cqw 0.1cqw;
+    height: 3.35cqw;
+    padding: 0.45cqw 1.2cqw 0.1cqw;
 }
 
 .contact-panel input::placeholder,
@@ -306,27 +327,27 @@ body::after {
 
 .message-field {
     position: relative;
-    width: 115%;
-    height: 11.8cqw;
-    margin-top: 0.25cqw;
+    width: 100%;
+    height: 12cqw;
+    margin-top: 0.4cqw;
 }
 
 .contact-panel textarea {
     height: 100%;
-    padding: 0.65cqw 1.7cqw;
+    padding: 0.65cqw 1.2cqw;
     resize: none;
     text-align: left;
 }
 
 .message-field > span {
     position: absolute;
-    top: 7.6cqw;
-    left: 15.2cqw;
+    top: 7.8cqw;
+    left: 50%;
     color: var(--about-muted);
     font-size: 1.35cqw;
     letter-spacing: 0.035em;
-    transform: scaleX(1.08);
-    transform-origin: left center;
+    transform: translateX(-50%) scaleX(1.08);
+    transform-origin: center;
     pointer-events: none;
 }
 
@@ -336,8 +357,8 @@ body::after {
 
 .contact-panel button {
     align-self: flex-end;
-    margin-top: 1.15cqw;
-    margin-right: 2%;
+    margin-top: 0.9cqw;
+    margin-right: 0;
     padding: 0.45cqw 1.45cqw;
     border: 2px solid var(--about-muted);
     background: transparent;
@@ -347,6 +368,7 @@ body::after {
     font-size: 1.25cqw;
     font-weight: 400;
     cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease;
 }
 
 .contact-panel input:focus,
@@ -715,6 +737,82 @@ body::after {
 
 .particle-overlay--color {
     z-index: 5;
+}
+
+/* Portfolio graph pull-out */
+.graph-drawer {
+    --handle-width: clamp(18px, 1.35cqw, 26px);
+    position: absolute;
+    z-index: 8;
+    top: 13%;
+    left: 0;
+    display: flex;
+    width: min(60cqw, 960px);
+    clip-path: inset(0 0 0 calc(100% - var(--handle-width)));
+    transform: translateX(calc(-100% + var(--handle-width) - 2px));
+    transition:
+        transform 850ms cubic-bezier(.76, 0, .24, 1),
+        clip-path 850ms cubic-bezier(.76, 0, .24, 1);
+    will-change: transform;
+}
+
+.graph-drawer.is-open {
+    clip-path: inset(0);
+    transform: translateX(0);
+}
+
+.graph-drawer-frame {
+    box-sizing: border-box;
+    width: calc(100% - var(--handle-width));
+    padding: clamp(5px, .5cqw, 10px);
+    border: clamp(5px, .5cqw, 10px) solid #0b2f4f;
+    background: #f7f5ef;
+    overflow: hidden;
+}
+
+.graph-drawer-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform: none;
+}
+
+.graph-drawer-handle {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: var(--handle-width);
+    height: clamp(48px, 5cqh, 68px);
+    padding: 0;
+    border: 0;
+    background: #0b2f4f;
+    cursor: pointer;
+}
+
+.graph-drawer-handle-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 48%;
+}
+
+.graph-drawer-handle-lines span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #f7f5ef;
+}
+
+.graph-drawer-handle:hover,
+.graph-drawer-handle:focus-visible {
+    background: #123f65;
+    outline: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .graph-drawer { transition: none; }
 }
 
 .main-nav {
