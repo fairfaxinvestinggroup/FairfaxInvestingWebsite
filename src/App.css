@@ -8,22 +8,6 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'ZT Bros Oskon 90s';
-    src: url('/fonts/ZTBrosOskon90s-Light.otf') format('opentype');
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'ZT Bros Oskon 90s';
-    src: url('/fonts/ZTBrosOskon90s-Regular.otf') format('opentype');
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-}
-
 html,
 body,
 #root {
@@ -684,7 +668,6 @@ body::after {
     position: absolute;
     z-index: 0;
 
-    /* Change only these three values to resize or reposition this disc. */
     top: -50%;
     left: -2%;
     width: 130%;
@@ -739,7 +722,6 @@ body::after {
     z-index: 5;
 }
 
-/* Portfolio graph pull-out */
 .graph-drawer {
     --handle-width: clamp(18px, 1.35cqw, 26px);
     position: absolute;
@@ -748,16 +730,13 @@ body::after {
     left: 0;
     display: flex;
     width: min(60cqw, 960px);
-    clip-path: inset(0 0 0 calc(100% - var(--handle-width)));
+    clip-path: none;
     transform: translateX(calc(-100% + var(--handle-width) - 2px));
-    transition:
-        transform 850ms cubic-bezier(.76, 0, .24, 1),
-        clip-path 850ms cubic-bezier(.76, 0, .24, 1);
+    transition: transform 850ms cubic-bezier(.76, 0, .24, 1);
     will-change: transform;
 }
 
 .graph-drawer.is-open {
-    clip-path: inset(0);
     transform: translateX(0);
 }
 
@@ -931,16 +910,11 @@ body::after {
     margin: 0;
     color: #131313;
     font-family: 'FSHaskumo', sans-serif;
-    /* Optical match for the nav's shorter lowercase letterforms. */
     font-size: min(1.4cqw, 1.68rem);
     font-weight: 400;
     line-height: 1;
     text-align: left;
 }
-
-/* ─────────────────────────────────────────────
-   BROKERAGE STATEMENTS
-───────────────────────────────────────────── */
 
 .brokerage-statements {
     position: absolute;
@@ -952,7 +926,6 @@ body::after {
     box-sizing: border-box;
     width: min(24cqw, 380px);
 
-    /* Completely invisible container while closed */
     padding: 0;
     background: transparent;
 
@@ -963,14 +936,10 @@ body::after {
 }
 
 
-/* Add spacing around everything only when opened */
-
 .brokerage-statements.is-open {
     padding: 1.2rem;
 }
 
-
-/* Navy panel */
 
 .brokerage-statements::before {
     position: absolute;
@@ -992,14 +961,10 @@ body::after {
 }
 
 
-/* Panel expands top → bottom */
-
 .brokerage-statements.is-open::before {
     transform: scaleY(1);
 }
 
-
-/* ───────── BUTTON ───────── */
 
 .brokerage-statements-button {
     position: relative;
@@ -1041,23 +1006,17 @@ body::after {
 }
 
 
-/* Heading becomes grey only when opened */
-
 .brokerage-statements.is-open
 .brokerage-statements-button {
     color: #d7d9d8;
 }
 
 
-/* Arrow */
-
 .brokerage-statements-arrow {
     margin-left: 0.25rem;
     font-size: 0.75em;
 }
 
-
-/* ───────── STATEMENT LIST ───────── */
 
 .brokerage-statements-menu {
     position: relative;
@@ -1068,7 +1027,6 @@ body::after {
 
     width: 100%;
 
-    /* CLOSED */
     max-height: 0;
     margin-top: 0;
 
@@ -1085,8 +1043,6 @@ body::after {
 }
 
 
-/* OPEN */
-
 .brokerage-statements-menu.is-open {
     max-height: 400px;
     margin-top: 1.5rem;
@@ -1096,8 +1052,6 @@ body::after {
     transform: translateY(0);
 }
 
-
-/* ───────── PDF ROWS ───────── */
 
 .brokerage-statements-menu a {
     display: flex;
@@ -1132,8 +1086,6 @@ body::after {
 }
 
 
-/* PDF ↗ */
-
 .brokerage-statements-menu a::after {
     content: 'PDF ↗';
 
@@ -1157,10 +1109,6 @@ body::after {
 .brokerage-statements-menu a:hover::after {
     color: #f7f5ef;
 }
-
-/* ─────────────────────────────────────────────
-   IPHONE / PHONE LAYOUT
-───────────────────────────────────────────── */
 
 @media (max-width: 700px) {
     html,
@@ -1193,6 +1141,31 @@ body::after {
         top: -22%;
         left: -54%;
         width: 205%;
+    }
+
+    .graph-drawer {
+        top: 13%;
+        left: 0;
+        width: min(calc(41.5vw + var(--handle-width) + 26px), calc(208px + var(--handle-width)));
+        clip-path: none;
+        rotate: 0deg;
+        transform-origin: center;
+        transition: transform 850ms cubic-bezier(.76, 0, .24, 1);
+    }
+
+    .graph-drawer-frame {
+        position: relative;
+        height: min(calc(102.5vw + 26px), 476px);
+    }
+
+    .graph-drawer-frame img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: min(102.5vw, 450px);
+        height: auto;
+        max-width: none;
+        transform: translate(-50%, -50%) rotate(90deg);
     }
 
     .main-nav {

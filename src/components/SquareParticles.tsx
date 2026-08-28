@@ -3,7 +3,6 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
 const PARTICLE_COUNT = 100
-const PARTICLE_EPOCH = performance.now() / 1000
 
 type Particle = {
   z: number
@@ -13,6 +12,9 @@ type Particle = {
   drift: number
   lifetime: number
   timeOffset: number
+  cycle: number
+  xRatio: number
+  startingYRatio: number
 }
 
 type SquareParticlesProps = {
@@ -50,9 +52,8 @@ export function SquareParticles({
     () => ({
       particleColor: { value: new THREE.Color(color) },
       particleOpacity: { value: opacity },
-      inversionPass: { value: inversion ? 1 : 0 },
     }),
-    [color, inversion, opacity],
+    [color, opacity],
   )
   const particles = useMemo<Particle[]>(
     () => {
@@ -69,26 +70,30 @@ export function SquareParticles({
           drift: 0.012 + random() * 0.028,
           lifetime,
           timeOffset: random() * lifetime,
+          cycle: -1,
+          xRatio: 0,
+          startingYRatio: 0,
         }
       })
     },
     [],
   )
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
     if (!mesh.current) return
 
-    const elapsed = performance.now() / 1000 - PARTICLE_EPOCH
+    const elapsed = clock.elapsedTime
 
     particles.forEach((particle, index) => {
       const particleTime = elapsed + particle.timeOffset
       const cycle = Math.floor(particleTime / particle.lifetime)
       const cycleTime = particleTime % particle.lifetime
       const lifeProgress = cycleTime / particle.lifetime
-      const x =
-        (cycleRandom(index, cycle, 1) - 0.5) * viewport.width
-      const startingY =
-        (cycleRandom(index, cycle, 2) - 0.5) * viewport.height
+      if (cycle !== particle.cycle) {
+        particle.cycle = cycle
+        particle.xRatio = cycleRandom(index, cycle, 1) - 0.5
+        particle.startingYRatio = cycleRandom(index, cycle, 2) - 0.5
+      }
       const fadeScale = Math.min(
         1,
         lifeProgress * 8,
@@ -96,9 +101,9 @@ export function SquareParticles({
       )
 
       dummy.position.set(
-        x +
+        particle.xRatio * viewport.width +
           Math.sin(elapsed * 0.35 + particle.phase) * particle.drift,
-        startingY + cycleTime * particle.speed,
+        particle.startingYRatio * viewport.height + cycleTime * particle.speed,
         particle.z,
       )
       dummy.rotation.z = elapsed * 0.035 + particle.phase
@@ -121,10 +126,7 @@ export function SquareParticles({
         <shaderMaterial
           uniforms={uniforms}
           vertexShader={`
-            varying vec2 particleUv;
-
             void main() {
-              particleUv = uv;
               gl_Position =
                 projectionMatrix *
                 modelViewMatrix *
@@ -135,7 +137,6 @@ export function SquareParticles({
           fragmentShader={`
             uniform vec3 particleColor;
             uniform float particleOpacity;
-            varying vec2 particleUv;
 
             float ditherThreshold(vec2 position) {
               int x = int(mod(floor(position.x / 1.25), 4.0));

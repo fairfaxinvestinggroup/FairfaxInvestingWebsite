@@ -1,14 +1,56 @@
-import { useForm } from '@formspree/react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useForm } from '@formspree/react'
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import type { ClipboardEvent, CSSProperties } from 'react'
-import { Canvas} from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { Model } from './components/Dollar'
 import { SquareParticles } from './components/SquareParticles'
-import { TeamDeck } from './components/TeamDeck'
 import { EffectComposer } from '@react-three/postprocessing'
 import { DitherEffect } from './effects/DitherEffect'
 import { degToRad } from 'three/src/math/MathUtils.js'
 import './App.css'
+
+const BASE_URL = import.meta.env.BASE_URL
+const TeamDeck = lazy(() =>
+  import('./components/TeamDeck').then((module) => ({
+    default: module.TeamDeck,
+  })),
+)
+const TITLE_LINES = ['FAIRFAX', 'INVESTING', 'GROUP']
+const STATEMENTS = [
+  ['2026-07.pdf', '7/31/26'],
+  ['2026-06.pdf', '6/30/26'],
+  ['2026-05.pdf', '5/31/26'],
+  ['2026-04.pdf', '4/30/26'],
+  ['2026-03.pdf', '3/31/26'],
+  ['2026-02.pdf', '2/28/26'],
+  ['2026-01.pdf', '1/31/26'],
+] as const
+const NAV_LINKS = [
+  ['portal', 'https://www.myiclub.com/club/public/fairfaxinvestinggroup'],
+  ['dashboard', 'https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0'],
+  ['reports', 'https://medium.com/@fairfax.investing.group'],
+] as const
+const CANVAS_GL = {
+  alpha: true,
+  antialias: false,
+  powerPreference: 'high-performance' as const,
+}
+
+function Title({ inverted = false }: { inverted?: boolean }) {
+  return (
+    <div className={`title${inverted ? ' title--inverted' : ''}`}>
+      {TITLE_LINES.map((line) => <span key={line}>{line}</span>)}
+    </div>
+  )
+}
 
 export default function App() {
   const [state, handleSubmit] = useForm("mljrgvwr")
@@ -159,131 +201,59 @@ export default function App() {
     }
   }, [])
 
-  // Keep the WebGL-heavy hero element stable while scroll gestures update the
-  // about-page preview. This avoids reconciling three Canvas trees per frame.
   const hero = useMemo(
     () => (
       <section className="hero-page">
         <main className="main">
-<div className="top-disc" aria-hidden="true" />
-<aside className={`graph-drawer${graphOpen ? ' is-open' : ''}`}>
-  <div className="graph-drawer-frame">
-    <img src={`${import.meta.env.BASE_URL}images/graph-return.svg`} alt="Portfolio return graph" />
-  </div>
-  <button
-    type="button"
-    className="graph-drawer-handle"
-    onClick={() => setGraphOpen((open) => !open)}
-    aria-expanded={graphOpen}
-    aria-label={`${graphOpen ? 'Close' : 'Open'} portfolio return graph`}
-  >
-    <span className="graph-drawer-handle-lines" aria-hidden="true">
-      <span />
-      <span />
-    </span>
-  </button>
-</aside>
+          <div className="top-disc" aria-hidden="true" />
+          <aside className={`graph-drawer${graphOpen ? ' is-open' : ''}`}>
+            <div className="graph-drawer-frame">
+              <img src={`${BASE_URL}images/graph-return.svg`} alt="Portfolio return graph" />
+            </div>
+            <button
+              type="button"
+              className="graph-drawer-handle"
+              onClick={() => setGraphOpen((open) => !open)}
+              aria-expanded={graphOpen}
+              aria-label={`${graphOpen ? 'Close' : 'Open'} portfolio return graph`}
+            >
+              <span className="graph-drawer-handle-lines" aria-hidden="true">
+                <span />
+                <span />
+              </span>
+            </button>
+          </aside>
 
-<div
-  className={`brokerage-statements${
-    statementsOpen ? ' is-open' : ''
-  }`}
->
-  <button
-    type="button"
-    className="brokerage-statements-button"
-    onClick={() => setStatementsOpen((open) => !open)}
-    aria-expanded={statementsOpen}
-  >
-    brokerage statements
-
-    <span
-      className={`brokerage-statements-arrow${
-        statementsOpen ? ' is-open' : ''
-      }`}
-    >
-      ▾
-    </span>
-  </button>
-
-  <div
-    className={`brokerage-statements-menu${
-      statementsOpen ? ' is-open' : ''
-    }`}
-  >
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-07.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      7/31/26
-    </a>
-
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-06.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      6/30/26
-    </a>
-
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-05.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      5/31/26
-    </a>
-
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-04.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      4/30/26
-    </a>
-
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-03.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      3/31/26
-    </a>
-
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-02.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      2/28/26
-    </a>
-
-    <a
-      href={`${import.meta.env.BASE_URL}statements/2026-01.pdf`}
-      target="_blank"
-      rel="noreferrer"
-    >
-      1/31/26
-    </a>
-  </div>
-</div>
-      <nav className="main-nav" aria-label="Primary navigation">
-        <a href="https://www.myiclub.com/club/public/fairfaxinvestinggroup" target="_blank">portal</a>
-        <a href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0" target="_blank">dashboard</a>
-        <a href="https://medium.com/@fairfax.investing.group" target="_blank">reports</a>
-      </nav>
+          <div className={`brokerage-statements${statementsOpen ? ' is-open' : ''}`}>
+            <button
+              type="button"
+              className="brokerage-statements-button"
+              onClick={() => setStatementsOpen((open) => !open)}
+              aria-expanded={statementsOpen}
+            >
+              brokerage statements
+              <span className={`brokerage-statements-arrow${statementsOpen ? ' is-open' : ''}`}>
+                ▾
+              </span>
+            </button>
+            <div className={`brokerage-statements-menu${statementsOpen ? ' is-open' : ''}`}>
+              {STATEMENTS.map(([file, label]) => (
+                <a href={`${BASE_URL}statements/${file}`} target="_blank" rel="noreferrer" key={file}>
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+          <nav className="main-nav" aria-label="Primary navigation">
+            {NAV_LINKS.map(([label, href]) => (
+              <a href={href} target="_blank" rel="noreferrer" key={label}>{label}</a>
+            ))}
+          </nav>
       <h1 className="title">
-        <span>FAIRFAX</span>
-        <span>INVESTING</span>
-        <span>GROUP</span>
+        {TITLE_LINES.map((line) => <span key={line}>{line}</span>)}
       </h1>
       <div className="title-inversion-mask" aria-hidden="true">
-        <div className="title title--inverted">
-          <span>FAIRFAX</span>
-          <span>INVESTING</span>
-          <span>GROUP</span>
-        </div>
+        <Title inverted />
       </div>
       <button
         className="scroll-cue"
@@ -311,11 +281,7 @@ export default function App() {
           frameloop={aboutPageReady ? 'never' : 'always'}
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={1}
-          gl={{
-            alpha: true,
-            antialias: false,
-            powerPreference: 'high-performance',
-          }}
+          gl={CANVAS_GL}
         >
           <SquareParticles
             color="#000000"
@@ -332,11 +298,7 @@ export default function App() {
           frameloop={aboutPageReady ? 'never' : 'always'}
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={1}
-          gl={{
-            alpha: true,
-            antialias: false,
-            powerPreference: 'high-performance',
-          }}
+          gl={CANVAS_GL}
         >
           <SquareParticles color="#0b2f4f" opacity={0.46} />
         </Canvas>
@@ -346,11 +308,7 @@ export default function App() {
           frameloop={aboutPageReady ? 'never' : 'always'}
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={[1, 1.25]}
-          gl={{
-            alpha: true,
-            antialias: false,
-            powerPreference: 'high-performance',
-          }}
+          gl={CANVAS_GL}
         >
           <directionalLight position={[5, 7, 3.5]} intensity={6} />
           <group scale={1.25}>
@@ -399,7 +357,7 @@ export default function App() {
       >
         <div className="about-brand">
           <img
-            src={`${import.meta.env.BASE_URL}images/FairfaxInvestingLogo.svg`}
+            src={`${BASE_URL}images/FairfaxInvestingLogo.svg`}
             alt="Fairfax Investing Group"
           />
         </div>
@@ -458,7 +416,9 @@ export default function App() {
           <p>We’d love to meet you! Please reach out.</p>
         </article>
 
-        <TeamDeck />
+        <Suspense fallback={null}>
+          <TeamDeck />
+        </Suspense>
 
         <section className="contact-panel" aria-labelledby="contact-heading">
           

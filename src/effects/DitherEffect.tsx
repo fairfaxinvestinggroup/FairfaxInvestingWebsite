@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Effect } from 'postprocessing'
 import { Uniform, Vector2, WebGLRenderTarget, WebGLRenderer } from 'three'
 
@@ -51,8 +51,6 @@ const fragmentShader = /* glsl */ `
     vec4 sampledColor = texture2D(inputBuffer, pixelatedUv);
     vec3 baseColor = sampledColor.rgb;
 
-    // Transparent coverage behaves like the white page. This makes opacity
-    // participate in the same threshold pattern as the surface lighting.
     float surfaceLuminance =
       dot(baseColor, vec3(0.2126, 0.7152, 0.0722));
     float luminance =
@@ -77,8 +75,6 @@ const fragmentShader = /* glsl */ `
       baseColor = 1.0 - baseColor;
     }
 
-    // The monochrome pass also replaces the mesh's smooth alpha mask. Only
-    // complete square dither cells remain, including around the outer edge.
     float outputAlpha =
       grayscaleOnly > 0.0
         ? (grayscaleLevel < 0.999 ? 1.0 : 0.0)
@@ -114,15 +110,6 @@ class DitherEffectImpl extends Effect {
     const resolution = this.uniforms.get('resolution')?.value as Vector2
     resolution.set(inputBuffer.width, inputBuffer.height)
   }
-
-  setOptions(options: DitherOptions) {
-    this.uniforms.get('gridSize')!.value = options.gridSize
-    this.uniforms.get('pixelSizeRatio')!.value = options.pixelSizeRatio
-    this.uniforms.get('grayscaleOnly')!.value =
-      options.grayscaleOnly ? 1 : 0
-    this.uniforms.get('invertColor')!.value =
-      options.invertColor ? 1 : 0
-  }
 }
 
 type DitherEffectProps = {
@@ -141,22 +128,13 @@ export function DitherEffect({
   const effect = useMemo(
     () =>
       new DitherEffectImpl({
-        gridSize: 4,
-        pixelSizeRatio: 1,
-        grayscaleOnly: true,
-        invertColor: false,
+        gridSize,
+        pixelSizeRatio,
+        grayscaleOnly,
+        invertColor,
       }),
-    [],
+    [gridSize, grayscaleOnly, invertColor, pixelSizeRatio],
   )
-
-  useEffect(() => {
-    effect.setOptions({
-      gridSize,
-      pixelSizeRatio,
-      grayscaleOnly,
-      invertColor,
-    })
-  }, [effect, gridSize, grayscaleOnly, invertColor, pixelSizeRatio])
 
   return <primitive object={effect} dispose={null} />
 }

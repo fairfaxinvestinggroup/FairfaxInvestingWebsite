@@ -2,13 +2,20 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 
+const BASE_URL = import.meta.env.BASE_URL
+const RESTING_SHADOW = '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)'
+const HOVER_SHADOW = '0 8px 16px rgba(0,0,0,.18), 0 22px 40px rgba(0,0,0,.26)'
+const DEAL_ORDER = [7, 6, 5, 4, 3, 2, 1, 0]
+const RETURN_ORDER = [0, 1, 2, 3, 4, 5, 6, 7]
+const ACTION_CARD_INDICES = [4, 5, 6, 7]
+
 const team = [
   {
     name: 'Titus Er',
     role: 'General Partner · Co-Founder',
     detail: 'University of Virginia · President',
-    image: `${import.meta.env.BASE_URL}images/Titus.png`,
-    actionImage: `${import.meta.env.BASE_URL}images/Titus_Action_Photo.jpeg`,
+    image: `${BASE_URL}images/Titus.png`,
+    actionImage: `${BASE_URL}images/Titus_Action_Photo.jpeg`,
     actionLink: 'https://www.vsba.org/news/press-releases/news-release-vsba-board-of-directors-northeastern-region-regional-scholarship-recipient-announced/',
     linkedin: 'https://www.linkedin.com/in/titus-er-3b545a321/',
   },
@@ -16,8 +23,8 @@ const team = [
     name: 'Claire Mo',
     role: 'General Partner · Co-Founder',
     detail: 'Columbia University · Vice-President',
-    image: `${import.meta.env.BASE_URL}images/Claire.png`,
-    actionImage: `${import.meta.env.BASE_URL}images/Claire_Action_Photo.jpg`,
+    image: `${BASE_URL}images/Claire.png`,
+    actionImage: `${BASE_URL}images/Claire_Action_Photo.jpg`,
     actionLink: 'https://gocolumbialions.com/sports/womens-volleyball/roster/claire-mo/23914',
     linkedin: 'https://www.linkedin.com/in/claire-mo-3495343a8/',
   },
@@ -25,8 +32,8 @@ const team = [
     name: 'Thomas Duong',
     role: 'General Partner · Co-Founder',
     detail: 'University of Virginia · Treasurer',
-    image: `${import.meta.env.BASE_URL}images/Thomas.png`,
-    actionImage: `${import.meta.env.BASE_URL}images/Thomas_Action_Photo.JPG`,
+    image: `${BASE_URL}images/Thomas.png`,
+    actionImage: `${BASE_URL}images/Thomas_Action_Photo.JPG`,
     actionLink: 'https://www.fcps.edu/news/four-fcps-student-projects-win-grand-prize-2025-virginia-state-science-fair',
     linkedin: 'https://www.linkedin.com/in/thomas-duong-5355963a8/',
   },
@@ -34,8 +41,8 @@ const team = [
     name: 'Kyle Li',
     role: 'General Partner · Co-Founder',
     detail: 'Columbia University · Secretary',
-    image: `${import.meta.env.BASE_URL}images/Kyle.png`,
-    actionImage: `${import.meta.env.BASE_URL}images/Kyle_Action_Photo.jpeg`,
+    image: `${BASE_URL}images/Kyle.png`,
+    actionImage: `${BASE_URL}images/Kyle_Action_Photo.jpeg`,
     actionLink: 'https://gocolumbialions.com/sports/mens-swimming-and-diving/roster/kyle-li/22878',
     linkedin: 'https://www.linkedin.com/in/kyle-li-869a1233a/',
   },
@@ -83,7 +90,6 @@ export function TeamDeck() {
   const [returning, setReturning] = useState(false)
   const [animating, setAnimating] = useState(false)
   const dealtRef = useRef(false)
-  const returningRef = useRef(false)
   const animatingRef = useRef(false)
 
   const placeFan = (immediate = false) => {
@@ -100,7 +106,7 @@ export function TeamDeck() {
         zIndex: pairLayer(memberIndex) + (
           deckCards[cardIndex].kind === 'action' ? 1 : 0
         ),
-        boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
+        boxShadow: RESTING_SHADOW,
         duration: immediate ? undefined : 0.45,
         ease: 'power3.out',
         clearProps: 'transformOrigin',
@@ -116,11 +122,19 @@ export function TeamDeck() {
   }, [])
 
   useEffect(() => {
+    let resizeFrame = 0
     const handleResize = () => {
-      if (dealtRef.current) deal(true)
+      if (!dealtRef.current || resizeFrame) return
+      resizeFrame = requestAnimationFrame(() => {
+        resizeFrame = 0
+        deal(true)
+      })
     }
     window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    return () => {
+      cancelAnimationFrame(resizeFrame)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   const getLanding = (
@@ -160,10 +174,6 @@ export function TeamDeck() {
     if (!root.current) return
     timeline.current?.kill()
     const cards = cardRefs.current
-    // Action cards sit on top of the resting deck and are all dealt before
-    // the matching headshots follow into the same four landing positions.
-    const order = [7, 6, 5, 4, 3, 2, 1, 0]
-
     if (immediate) {
       cards.forEach((card, cardIndex) => {
         if (!card) return
@@ -177,7 +187,7 @@ export function TeamDeck() {
           rotationZ: landing.rotation,
           scale: 1,
           zIndex: dealtLayer(deckCard.memberIndex, deckCard.kind),
-          boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
+          boxShadow: RESTING_SHADOW,
         })
       })
       return
@@ -193,7 +203,7 @@ export function TeamDeck() {
     })
     timeline.current = tl
 
-    order.forEach((cardIndex, sequence) => {
+    DEAL_ORDER.forEach((cardIndex, sequence) => {
       const card = cards[cardIndex]
       if (!card) return
       const deckCard = deckCards[cardIndex]
@@ -212,7 +222,7 @@ export function TeamDeck() {
           rotationY: 0,
           rotationZ: landing.rotation,
           scale: 1,
-          boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
+          boxShadow: RESTING_SHADOW,
           force3D: true,
           duration: 0.5,
           ease: 'power3.inOut',
@@ -220,21 +230,18 @@ export function TeamDeck() {
     })
 
     dealtRef.current = true
-    returningRef.current = false
     setReturning(false)
     setDealt(true)
   }
 
   const gather = () => {
     timeline.current?.kill()
-    returningRef.current = true
     animatingRef.current = true
     setReturning(true)
     setAnimating(true)
     timeline.current = gsap.timeline({
       onComplete: () => {
         dealtRef.current = false
-        returningRef.current = false
         animatingRef.current = false
         placeFan(true)
         setReturning(false)
@@ -243,9 +250,7 @@ export function TeamDeck() {
       },
     })
 
-    // Once the headshot batch is back in the deck, hand the top layer to
-    // the action cards before their return phase begins.
-    ;[4, 5, 6, 7].forEach((cardIndex) => {
+    ACTION_CARD_INDICES.forEach((cardIndex) => {
       const card = cardRefs.current[cardIndex]
       if (!card) return
       timeline.current!.set(
@@ -255,7 +260,7 @@ export function TeamDeck() {
       )
     })
 
-    ;[0, 1, 2, 3, 4, 5, 6, 7].forEach((cardIndex, sequence) => {
+    RETURN_ORDER.forEach((cardIndex, sequence) => {
       const card = cardRefs.current[cardIndex]
       if (!card) return
       const { memberIndex } = deckCards[cardIndex]
@@ -269,7 +274,7 @@ export function TeamDeck() {
         rotationY: 0,
         rotationZ: fan[memberIndex].rotation,
         scale: 1,
-        boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
+        boxShadow: RESTING_SHADOW,
         duration: 0.5,
         ease: 'power3.inOut',
       }, start)
@@ -319,8 +324,8 @@ export function TeamDeck() {
           )
         : undefined,
       boxShadow: hovering
-        ? '0 8px 16px rgba(0,0,0,.18), 0 22px 40px rgba(0,0,0,.26)'
-        : '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
+        ? HOVER_SHADOW
+        : RESTING_SHADOW,
       duration: 0.25,
       ease: 'power2.out',
       overwrite: 'auto',
