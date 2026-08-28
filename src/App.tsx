@@ -13,6 +13,7 @@ import './App.css'
 export default function App() {
   const [state, handleSubmit] = useForm("mljrgvwr")
   const [statementsOpen, setStatementsOpen] = useState(false)
+  const [graphOpen, setGraphOpen] = useState(false)
   const [secondScreenVisible, setSecondScreenVisible] = useState(false)
   const [peekProgress, setPeekProgress] = useState(0)
   const [aboutPageReady, setAboutPageReady] = useState(false)
@@ -155,6 +156,23 @@ export default function App() {
       <section className="hero-page">
         <main className="main">
 <div className="top-disc" aria-hidden="true" />
+<aside className={`graph-drawer${graphOpen ? ' is-open' : ''}`}>
+  <div className="graph-drawer-frame">
+    <img src={`${import.meta.env.BASE_URL}images/graph-return.svg`} alt="Portfolio return graph" />
+  </div>
+  <button
+    type="button"
+    className="graph-drawer-handle"
+    onClick={() => setGraphOpen((open) => !open)}
+    aria-expanded={graphOpen}
+    aria-label={`${graphOpen ? 'Close' : 'Open'} portfolio return graph`}
+  >
+    <span className="graph-drawer-handle-lines" aria-hidden="true">
+      <span />
+      <span />
+    </span>
+  </button>
+</aside>
 
 <div
   className={`brokerage-statements${
@@ -364,7 +382,7 @@ export default function App() {
         </main>
       </section>
     ),
-[aboutPageReady, showAboutPage, statementsOpen],
+[aboutPageReady, graphOpen, showAboutPage, statementsOpen],
 )
 
   return (
@@ -458,7 +476,10 @@ export default function App() {
           
           <h2 id="contact-heading">Contact Us</h2>
           <p className="contact-email">
-            or email us at fairfax.investing.group@gmail.com
+            or email us at{' '}
+            <a href="mailto:fairfax.investing.group@gmail.com">
+              fairfax.investing.group@gmail.com
+            </a>
           </p>
           
             <form
