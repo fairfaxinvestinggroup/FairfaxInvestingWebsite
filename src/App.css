@@ -210,7 +210,7 @@ body::after {
 }
 
 .about-copy {
-    top: 21.8%;
+    top: 18.5%;
     left: 20.2%;
     width: 23%;
 }
@@ -383,7 +383,11 @@ body::after {
     overflow: hidden;
     border: 1px solid rgba(9, 31, 48, 0.2);
     border-radius: 0;
-    background: #f4f0e5;
+    background-color: #f4f0e5;
+    background-image:
+        linear-gradient(rgba(11, 47, 79, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11, 47, 79, 0.09) 1px, transparent 1px);
+    background-size: 5px 5px;
     color: #0b2f4f;
     box-shadow:
         0 4px 8px rgba(0, 0, 0, .14),
@@ -493,7 +497,7 @@ body::after {
     min-height: 24%;
     box-sizing: border-box;
     padding: clamp(14px, 1.3vw, 20px) 0 0;
-    background: #f4f0e5;
+    background: transparent;
 }
 
 .team-card__copy p,
