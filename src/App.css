@@ -565,8 +565,8 @@ body::after {
 
 @media (max-width: 700px) {
     .team-cards {
-        bottom: calc(clamp(158px, 40vw, 210px) * -0.98);
-        width: clamp(158px, 40vw, 210px);
+        bottom: calc(clamp(170px, 44vw, 230px) * -0.98);
+        width: clamp(170px, 44vw, 230px);
     }
 
     .team-deal-button {
@@ -1079,6 +1079,7 @@ body::after {
     .main::before {
         bottom: -22%;
         left: -72%;
+        right: auto;
         width: 178%;
     }
 
@@ -1090,17 +1091,17 @@ body::after {
 
     .main-nav {
         top: calc(env(safe-area-inset-top) + 10px);
-        right: 14px;
+        right: 12px;
         left: auto;
         justify-content: flex-end;
-        gap: clamp(9px, 3vw, 14px);
+        gap: 8px;
     }
 
     .main-nav a,
     .brokerage-statements-button {
         min-height: 44px;
         font-family: 'FSHaskumo', sans-serif;
-        font-size: 14px;
+        font-size: clamp(11px, 3.4vw, 14px);
         font-weight: 400;
         line-height: 1;
         letter-spacing: normal;
@@ -1113,11 +1114,13 @@ body::after {
 
     .brokerage-statements {
         top: calc(env(safe-area-inset-top) + 10px);
-        left: 14px;
-        width: min(292px, calc(100vw - 36px));
+        right: auto;
+        left: 12px;
+        width: auto;
     }
 
     .brokerage-statements.is-open {
+        width: min(292px, calc(100vw - 24px));
         padding: 14px 16px 16px;
     }
 
@@ -1138,6 +1141,9 @@ body::after {
         width: 92vw;
         font-size: clamp(56px, 18vw, 78px);
         line-height: .96;
+        text-align: center;
+        transform: translate(-50%, -50%) scaleX(85%);
+        transform-origin: center;
     }
 
     .title-inversion-mask {
@@ -1145,8 +1151,7 @@ body::after {
     }
 
     .scene {
-        transform: translate3d(-10%, 8%, 0) scale(1.16);
-        transform-origin: center;
+        display: none;
     }
 
     .particle-overlay--color {
@@ -1173,7 +1178,7 @@ body::after {
         bottom: auto;
         left: 50%;
         width: 86%;
-        font-size: 14px;
+        font-size: clamp(11px, 3.4vw, 14px);
         line-height: 1.05;
         text-align: center;
         transform: translateX(-50%);
@@ -1191,6 +1196,10 @@ body::after {
     .about-geometry {
         opacity: .58;
         stroke-width: 2;
+    }
+
+    .golden-spiral {
+        display: none;
     }
 
     .about-brand {
