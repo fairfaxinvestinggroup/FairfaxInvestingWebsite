@@ -133,7 +133,7 @@ export function TeamDeck() {
     const cardWidth = card.offsetWidth
     const cardHeight = card.offsetHeight
     const mobile = rootRect.width < 700
-    const xPercent = mobile ? [0.24, 0.76, 0.24, 0.76][memberIndex] : [0.19, 0.4, 0.62, 0.83][memberIndex]
+    const xPercent = mobile ? [0.2, 0.76, 0.2, 0.76][memberIndex] : [0.14, 0.37, 0.61, 0.84][memberIndex]
     const yPercent = mobile ? [0.32, 0.32, 0.66, 0.66][memberIndex] : [0.5, 0.46, 0.49, 0.48][memberIndex]
 
     const landing = {
