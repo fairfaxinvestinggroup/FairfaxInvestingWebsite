@@ -486,6 +486,10 @@ body::after {
     transition: filter 280ms ease;
 }
 
+.team-card--action.team-card--member-2 img {
+    object-position: 85% top;
+}
+
 .team-deck:not(.is-animating) .team-card:hover .team-card__portrait img,
 .team-deck:not(.is-animating) .team-card:focus-visible .team-card__portrait img {
     filter: grayscale(0) saturate(.9) contrast(1.04);
@@ -561,6 +565,10 @@ body::after {
     border-color: var(--about-white);
     color: var(--about-white);
     outline: 0;
+}
+
+.team-deal-button:disabled {
+    cursor: default;
 }
 
 @media (max-width: 700px) {

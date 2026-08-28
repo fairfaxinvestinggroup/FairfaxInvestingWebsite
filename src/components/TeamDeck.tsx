@@ -8,6 +8,8 @@ const team = [
     role: 'General Partner · Co-Founder',
     detail: 'University of Virginia · President',
     image: `${import.meta.env.BASE_URL}images/Titus.png`,
+    actionImage: `${import.meta.env.BASE_URL}images/Titus_Action_Photo.jpeg`,
+    actionLink: 'https://www.vsba.org/news/press-releases/news-release-vsba-board-of-directors-northeastern-region-regional-scholarship-recipient-announced/',
     linkedin: 'https://www.linkedin.com/in/titus-er-3b545a321/',
   },
   {
@@ -15,6 +17,8 @@ const team = [
     role: 'General Partner · Co-Founder',
     detail: 'Columbia University · Vice-President',
     image: `${import.meta.env.BASE_URL}images/Claire.png`,
+    actionImage: `${import.meta.env.BASE_URL}images/Claire_Action_Photo.jpg`,
+    actionLink: 'https://gocolumbialions.com/sports/womens-volleyball/roster/claire-mo/23914',
     linkedin: 'https://www.linkedin.com/in/claire-mo-3495343a8/',
   },
   {
@@ -22,6 +26,8 @@ const team = [
     role: 'General Partner · Co-Founder',
     detail: 'University of Virginia · Treasurer',
     image: `${import.meta.env.BASE_URL}images/Thomas.png`,
+    actionImage: `${import.meta.env.BASE_URL}images/Thomas_Action_Photo.JPG`,
+    actionLink: 'https://www.fcps.edu/news/four-fcps-student-projects-win-grand-prize-2025-virginia-state-science-fair',
     linkedin: 'https://www.linkedin.com/in/thomas-duong-5355963a8/',
   },
   {
@@ -29,8 +35,23 @@ const team = [
     role: 'General Partner · Co-Founder',
     detail: 'Columbia University · Secretary',
     image: `${import.meta.env.BASE_URL}images/Kyle.png`,
+    actionImage: `${import.meta.env.BASE_URL}images/Kyle_Action_Photo.jpeg`,
+    actionLink: 'https://gocolumbialions.com/sports/mens-swimming-and-diving/roster/kyle-li/22878',
     linkedin: 'https://www.linkedin.com/in/kyle-li-869a1233a/',
   },
+]
+
+const deckCards = [
+  ...team.map((member, memberIndex) => ({
+    member,
+    memberIndex,
+    kind: 'headshot' as const,
+  })),
+  ...team.map((member, memberIndex) => ({
+    member,
+    memberIndex,
+    kind: 'action' as const,
+  })),
 ]
 
 const fan = [
@@ -47,6 +68,13 @@ const hoverFan = [
   { x: 36, y: 4, rotation: 7 },
 ]
 
+const pairLayer = (memberIndex: number) => 20 + memberIndex * 10
+
+const dealtLayer = (
+  memberIndex: number,
+  kind: 'headshot' | 'action',
+) => pairLayer(memberIndex) + (kind === 'headshot' ? 1 : 0)
+
 export function TeamDeck() {
   const root = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<Array<HTMLElement | null>>([])
@@ -59,15 +87,19 @@ export function TeamDeck() {
   const animatingRef = useRef(false)
 
   const placeFan = (immediate = false) => {
-    cardRefs.current.forEach((card, index) => {
+    cardRefs.current.forEach((card, cardIndex) => {
       if (!card) return
+      const { memberIndex } = deckCards[cardIndex]
       gsap[immediate ? 'set' : 'to'](card, {
-        x: fan[index].x,
-        y: fan[index].y,
+        x: fan[memberIndex].x,
+        y: fan[memberIndex].y,
         rotationX: 0,
         rotationY: 0,
-        rotationZ: fan[index].rotation,
+        rotationZ: fan[memberIndex].rotation,
         scale: 1,
+        zIndex: pairLayer(memberIndex) + (
+          deckCards[cardIndex].kind === 'action' ? 1 : 0
+        ),
         boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
         duration: immediate ? undefined : 0.45,
         ease: 'power3.out',
@@ -91,36 +123,52 @@ export function TeamDeck() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const getLanding = (card: HTMLElement, index: number) => {
+  const getLanding = (
+    card: HTMLElement,
+    memberIndex: number,
+    kind: 'headshot' | 'action' = 'headshot',
+  ) => {
     const rootRect = root.current!.getBoundingClientRect()
     const deckRect = card.parentElement!.getBoundingClientRect()
     const cardWidth = card.offsetWidth
     const cardHeight = card.offsetHeight
     const mobile = rootRect.width < 700
-    const xPercent = mobile ? [0.24, 0.76, 0.24, 0.76][index] : [0.19, 0.4, 0.62, 0.83][index]
-    const yPercent = mobile ? [0.32, 0.32, 0.66, 0.66][index] : [0.5, 0.46, 0.49, 0.48][index]
+    const xPercent = mobile ? [0.24, 0.76, 0.24, 0.76][memberIndex] : [0.19, 0.4, 0.62, 0.83][memberIndex]
+    const yPercent = mobile ? [0.32, 0.32, 0.66, 0.66][memberIndex] : [0.5, 0.46, 0.49, 0.48][memberIndex]
 
-    return {
+    const landing = {
       x:
         rootRect.left + rootRect.width * xPercent
         - deckRect.left - cardWidth / 2,
       y:
         rootRect.top + rootRect.height * yPercent
         - deckRect.top - cardHeight / 2,
-      rotation: (mobile ? [-3, -1, 3, -4] : [-3, -1, 3, 7])[index],
+      rotation: (mobile ? [-3, -1, 3, -4] : [-3, -1, 3, 7])[memberIndex],
     }
+
+    if (kind === 'action') {
+      const direction = memberIndex % 2 === 0 ? -1 : 1
+      landing.x += direction * (mobile ? 10 : 14)
+      landing.y -= mobile ? 11 : 15
+      landing.rotation += direction * 2
+    }
+
+    return landing
   }
 
   const deal = (immediate = false) => {
     if (!root.current) return
     timeline.current?.kill()
     const cards = cardRefs.current
-    const order = [3, 2, 1, 0]
+    // Action cards sit on top of the resting deck and are all dealt before
+    // the matching headshots follow into the same four landing positions.
+    const order = [7, 6, 5, 4, 3, 2, 1, 0]
 
     if (immediate) {
-      cards.forEach((card, index) => {
+      cards.forEach((card, cardIndex) => {
         if (!card) return
-        const landing = getLanding(card, index)
+        const deckCard = deckCards[cardIndex]
+        const landing = getLanding(card, deckCard.memberIndex, deckCard.kind)
         gsap.set(card, {
           x: landing.x,
           y: landing.y,
@@ -128,6 +176,7 @@ export function TeamDeck() {
           rotationY: 0,
           rotationZ: landing.rotation,
           scale: 1,
+          zIndex: dealtLayer(deckCard.memberIndex, deckCard.kind),
           boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
         })
       })
@@ -144,13 +193,18 @@ export function TeamDeck() {
     })
     timeline.current = tl
 
-    order.forEach((index, sequence) => {
-      const card = cards[index]
+    order.forEach((cardIndex, sequence) => {
+      const card = cards[cardIndex]
       if (!card) return
-      const landing = getLanding(card, index)
-      const start = sequence * 0.045
+      const deckCard = deckCards[cardIndex]
+      const landing = getLanding(card, deckCard.memberIndex, deckCard.kind)
+      const start = sequence < 4
+        ? sequence * 0.045
+        : 0.82 + (sequence - 4) * 0.045
 
-      tl.set(card, { zIndex: 20 + index }, start)
+      tl.set(card, {
+        zIndex: dealtLayer(deckCard.memberIndex, deckCard.kind),
+      }, start)
         .to(card, {
           x: landing.x,
           y: landing.y,
@@ -182,33 +236,52 @@ export function TeamDeck() {
         dealtRef.current = false
         returningRef.current = false
         animatingRef.current = false
+        placeFan(true)
         setReturning(false)
         setAnimating(false)
         setDealt(false)
       },
     })
-    ;[0, 1, 2, 3].forEach((index, sequence) => {
-      const card = cardRefs.current[index]
+
+    // Once the headshot batch is back in the deck, hand the top layer to
+    // the action cards before their return phase begins.
+    ;[4, 5, 6, 7].forEach((cardIndex) => {
+      const card = cardRefs.current[cardIndex]
       if (!card) return
+      timeline.current!.set(
+        card,
+        { zIndex: pairLayer(deckCards[cardIndex].memberIndex) + 2 },
+        0.7,
+      )
+    })
+
+    ;[0, 1, 2, 3, 4, 5, 6, 7].forEach((cardIndex, sequence) => {
+      const card = cardRefs.current[cardIndex]
+      if (!card) return
+      const { memberIndex } = deckCards[cardIndex]
+      const start = sequence < 4
+        ? sequence * 0.045
+        : 0.72 + (sequence - 4) * 0.045
       timeline.current!.to(card, {
-        x: fan[index].x,
-        y: fan[index].y,
+        x: fan[memberIndex].x,
+        y: fan[memberIndex].y,
         rotationX: 0,
         rotationY: 0,
-        rotationZ: fan[index].rotation,
+        rotationZ: fan[memberIndex].rotation,
         scale: 1,
         boxShadow: '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
         duration: 0.5,
         ease: 'power3.inOut',
-      }, sequence * 0.045)
+      }, start)
     })
   }
 
   const hover = (spread: boolean) => {
     if (dealtRef.current) return
-    cardRefs.current.forEach((card, index) => {
+    cardRefs.current.forEach((card, cardIndex) => {
       if (!card) return
-      const target = spread ? hoverFan[index] : fan[index]
+      const { memberIndex } = deckCards[cardIndex]
+      const target = spread ? hoverFan[memberIndex] : fan[memberIndex]
       gsap.to(card, {
         x: target.x,
         y: target.y,
@@ -219,20 +292,32 @@ export function TeamDeck() {
     })
   }
 
-  const hoverCard = (index: number, hovering: boolean) => {
-    const card = cardRefs.current[index]
+  const hoverCard = (
+    cardIndex: number,
+    memberIndex: number,
+    kind: 'headshot' | 'action',
+    hovering: boolean,
+  ) => {
+    const card = cardRefs.current[cardIndex]
     if (!card || animatingRef.current) return
     const target = dealtRef.current
-      ? getLanding(card, index)
+      ? getLanding(card, memberIndex, kind)
       : {
-          y: fan[index].y,
-          rotation: fan[index].rotation,
+          y: fan[memberIndex].y,
+          rotation: fan[memberIndex].rotation,
         }
 
     gsap.to(card, {
       y: hovering ? target.y - 10 : target.y,
       rotationZ: hovering ? target.rotation * 0.65 : target.rotation,
       scale: hovering ? 1.025 : 1,
+      zIndex: kind === 'action'
+        ? (
+            hovering
+              ? pairLayer(memberIndex) + 2
+              : dealtLayer(memberIndex, kind)
+          )
+        : undefined,
       boxShadow: hovering
         ? '0 8px 16px rgba(0,0,0,.18), 0 22px 40px rgba(0,0,0,.26)'
         : '0 4px 8px rgba(0,0,0,.14), 0 16px 30px rgba(0,0,0,.2)',
@@ -242,7 +327,7 @@ export function TeamDeck() {
     })
   }
 
-  const openLinkedIn = (url: string) => {
+  const openCardLink = (url: string) => {
     if (!dealtRef.current) return
     window.open(url, '_blank', 'noopener,noreferrer')
   }
@@ -253,34 +338,47 @@ export function TeamDeck() {
       ref={root}
     >
       <div className="team-cards" aria-live="polite">
-        {team.map((member, index) => (
+        {deckCards.map(({ member, memberIndex, kind }, cardIndex) => (
           <article
-            className="team-card"
-            key={member.name}
-            ref={(node) => { cardRefs.current[index] = node }}
-            onMouseEnter={() => hoverCard(index, true)}
-            onMouseLeave={() => hoverCard(index, false)}
-            onClick={() => openLinkedIn(member.linkedin)}
+            className={`team-card team-card--${kind} team-card--member-${memberIndex}`}
+            key={`${member.name}-${kind}`}
+            ref={(node) => { cardRefs.current[cardIndex] = node }}
+            onMouseEnter={() => hoverCard(cardIndex, memberIndex, kind, true)}
+            onMouseLeave={() => hoverCard(cardIndex, memberIndex, kind, false)}
+            onClick={() => openCardLink(
+              kind === 'action' ? member.actionLink : member.linkedin,
+            )}
             onKeyDown={(event) => {
-              if (!dealtRef.current || (event.key !== 'Enter' && event.key !== ' ')) return
+              if (
+                !dealtRef.current ||
+                (event.key !== 'Enter' && event.key !== ' ')
+              ) return
               event.preventDefault()
-              openLinkedIn(member.linkedin)
+              openCardLink(
+                kind === 'action' ? member.actionLink : member.linkedin,
+              )
             }}
             role={dealt ? 'link' : undefined}
             tabIndex={dealt ? 0 : -1}
-            aria-label={dealt ? `Open ${member.name}'s LinkedIn profile` : undefined}
+            aria-label={
+              dealt
+                ? `Open ${member.name}'s ${
+                    kind === 'action' ? 'feature' : 'LinkedIn profile'
+                  }`
+                : undefined
+            }
             style={{
-              '--card-index': index,
-              '--fan-x': `${fan[index].x}px`,
-              '--fan-y': `${fan[index].y}px`,
-              '--fan-rotation': `${fan[index].rotation}deg`,
+              '--card-index': cardIndex,
+              '--fan-x': `${fan[memberIndex].x}px`,
+              '--fan-y': `${fan[memberIndex].y}px`,
+              '--fan-rotation': `${fan[memberIndex].rotation}deg`,
             } as CSSProperties}
           >
             <div className="team-card__frame">
-              <span className="team-card__number">0{index + 1}</span>
+              <span className="team-card__number">0{memberIndex + 1}</span>
               <div className="team-card__portrait">
                 <img
-                  src={member.image}
+                  src={kind === 'action' ? member.actionImage : member.image}
                   alt={`${member.name}, ${member.role}`}
                   decoding="async"
                 />
@@ -302,6 +400,7 @@ export function TeamDeck() {
         onMouseEnter={() => hover(true)}
         onMouseLeave={() => hover(false)}
         aria-expanded={dealt}
+        disabled={animating}
       >
         <span>{dealt ? 'return the cards' : 'meet our team'}</span>
       </button>
