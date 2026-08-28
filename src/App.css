@@ -1051,3 +1051,346 @@ body::after {
 .brokerage-statements-menu a:hover::after {
     color: #f7f5ef;
 }
+
+/* ─────────────────────────────────────────────
+   IPHONE / PHONE LAYOUT
+───────────────────────────────────────────── */
+
+@media (max-width: 700px) {
+    html,
+    body,
+    #root,
+    .hero-page,
+    .main,
+    .black-page {
+        width: 100%;
+        height: 100dvh;
+        min-height: 100dvh;
+    }
+
+    body::after {
+        opacity: .1;
+    }
+
+    .main {
+        background-size: 4px 4px;
+    }
+
+    .main::before {
+        bottom: -22%;
+        left: -72%;
+        width: 178%;
+    }
+
+    .top-disc {
+        top: -22%;
+        left: -54%;
+        width: 205%;
+    }
+
+    .main-nav {
+        top: calc(env(safe-area-inset-top) + 10px);
+        right: 14px;
+        left: auto;
+        justify-content: flex-end;
+        gap: clamp(9px, 3vw, 14px);
+    }
+
+    .main-nav a,
+    .brokerage-statements-button {
+        min-height: 44px;
+        font-family: 'FSHaskumo', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: normal;
+    }
+
+    .main-nav a {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .brokerage-statements {
+        top: calc(env(safe-area-inset-top) + 10px);
+        left: 14px;
+        width: min(292px, calc(100vw - 36px));
+    }
+
+    .brokerage-statements.is-open {
+        padding: 14px 16px 16px;
+    }
+
+    .brokerage-statements-menu.is-open {
+        max-height: min(430px, 67dvh);
+        margin-top: 10px;
+    }
+
+    .brokerage-statements-menu a {
+        min-height: 44px;
+        padding: 10px 2px;
+        font-size: 13px;
+    }
+
+    .title {
+        top: 47%;
+        left: 50%;
+        width: 92vw;
+        font-size: clamp(56px, 18vw, 78px);
+        line-height: .96;
+    }
+
+    .title-inversion-mask {
+        display: none;
+    }
+
+    .scene {
+        transform: translate3d(-10%, 8%, 0) scale(1.16);
+        transform-origin: center;
+    }
+
+    .particle-overlay--color {
+        opacity: .82;
+    }
+
+    .scroll-cue {
+        bottom: calc(env(safe-area-inset-bottom) + 58px);
+        gap: 5px;
+    }
+
+    .title-arrow {
+        width: 48px;
+        stroke-width: 3;
+    }
+
+    .scroll-label {
+        font-size: 11px;
+    }
+
+    .portfolio-caption {
+        top: calc(47% + clamp(105px, 29vw, 126px));
+        right: auto;
+        bottom: auto;
+        left: 50%;
+        width: 86%;
+        font-size: 14px;
+        line-height: 1.05;
+        text-align: center;
+        transform: translateX(-50%);
+    }
+
+    .black-page::before {
+        left: 64%;
+        width: 30%;
+    }
+
+    .black-page::after {
+        width: 14px;
+    }
+
+    .about-geometry {
+        opacity: .58;
+        stroke-width: 2;
+    }
+
+    .about-brand {
+        top: calc(env(safe-area-inset-top) + 18px);
+        left: 20px;
+        width: 110px;
+        height: 42px;
+    }
+
+    .about-brand img {
+        top: -61px;
+        left: -35px;
+        width: 180px;
+        height: 180px;
+    }
+
+    .about-back {
+        top: calc(env(safe-area-inset-top) + 18px);
+        left: auto;
+        right: 22px;
+        width: 44px;
+        min-height: 44px;
+        transform: none;
+    }
+
+    .about-back svg {
+        margin-top: 8px;
+        stroke-width: 3;
+    }
+
+    .about-copy {
+        top: calc(env(safe-area-inset-top) + 128px);
+        left: 24px;
+        width: calc(100% - 48px);
+    }
+
+    .about-copy h2,
+    .contact-panel h2 {
+        font-size: clamp(30px, 9vw, 38px);
+        transform: none;
+    }
+
+    .about-copy h2,
+    .contact-panel h2 {
+        margin-left: 0;
+        margin-bottom: 12px;
+    }
+
+    .about-copy p {
+        max-width: 350px;
+        margin-bottom: 10px;
+        font-size: clamp(17px, 4.8vw, 20px);
+        line-height: 1.24;
+        transform: none;
+    }
+
+    .contact-panel {
+        top: calc(env(safe-area-inset-top) + 318px);
+        left: 24px;
+        width: calc(100% - 48px);
+    }
+
+    .contact-email {
+        margin: -4px 0 8px;
+        font-size: 13px;
+        line-height: 1.2;
+        transform: none;
+    }
+
+    .contact-panel label,
+    .contact-panel label:nth-of-type(2) {
+        width: 100%;
+    }
+
+    .contact-panel input,
+    .contact-panel textarea {
+        font-size: 16px;
+    }
+
+    .contact-panel input {
+        height: 42px;
+        padding: 9px 10px 3px;
+    }
+
+    .message-field {
+        width: 100%;
+        height: clamp(76px, 11dvh, 104px);
+        margin-top: 2px;
+    }
+
+    .contact-panel textarea {
+        padding: 10px;
+    }
+
+    .message-field > span {
+        top: 48%;
+        left: 48%;
+        font-size: 18px;
+    }
+
+    .contact-panel button {
+        min-height: 42px;
+        margin-top: 10px;
+        margin-right: 0;
+        padding: 7px 20px;
+        font-size: 17px;
+    }
+
+    .form-success {
+        margin: 8px 0 0;
+        font-size: 14px;
+    }
+
+}
+
+@media (max-width: 700px) and (max-height: 720px) {
+    .about-copy {
+        top: calc(env(safe-area-inset-top) + 112px);
+    }
+
+    .about-copy p {
+        font-size: 16px;
+        line-height: 1.15;
+    }
+
+    .contact-panel {
+        top: calc(env(safe-area-inset-top) + 267px);
+    }
+
+    .contact-panel h2 {
+        font-size: 29px;
+        margin-bottom: 7px;
+    }
+
+    .contact-panel input {
+        height: 36px;
+    }
+
+    .message-field {
+        height: 68px;
+    }
+
+    .contact-panel button {
+        min-height: 38px;
+        margin-top: 7px;
+    }
+}
+
+@media (min-width: 701px) and (max-width: 950px) and (max-height: 500px) {
+    .main-nav {
+        top: 16px;
+        right: 18px;
+    }
+
+    .main-nav a,
+    .brokerage-statements-button {
+        font-size: 13px;
+    }
+
+    .brokerage-statements {
+        top: 10px;
+        left: 16px;
+        width: 250px;
+    }
+
+    .title {
+        left: 56%;
+        width: 58vw;
+        font-size: 11vw;
+    }
+
+    .portfolio-caption {
+        font-size: 14px;
+    }
+
+    .about-copy {
+        top: 19%;
+        left: 12%;
+        width: 34%;
+    }
+
+    .contact-panel {
+        top: 15%;
+        left: 56%;
+        width: 36%;
+    }
+
+    .about-copy h2,
+    .contact-panel h2 {
+        font-size: 30px;
+    }
+
+    .about-copy p {
+        font-size: 17px;
+        margin-bottom: 16px;
+    }
+
+    .contact-panel input,
+    .contact-panel textarea {
+        font-size: 14px;
+    }
+
+}

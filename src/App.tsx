@@ -19,6 +19,7 @@ export default function App() {
   const secondScreenVisibleRef = useRef(false)
   const scrollIntent = useRef(0)
   const touchStartY = useRef<number | null>(null)
+  const touchNavigationBlocked = useRef(false)
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const showAboutPage = useCallback(() => {
@@ -88,11 +89,15 @@ export default function App() {
     }
 
     const handleTouchStart = (event: TouchEvent) => {
+      const target = event.target
+      touchNavigationBlocked.current =
+        target instanceof Element &&
+        Boolean(target.closest('input, textarea, select, .brokerage-statements, .team-deck'))
       touchStartY.current = event.touches[0]?.clientY ?? null
     }
 
     const handleTouchMove = (event: TouchEvent) => {
-      if (touchStartY.current === null) return
+      if (touchStartY.current === null || touchNavigationBlocked.current) return
 
       const currentY = event.touches[0]?.clientY
       if (currentY === undefined) return
@@ -110,7 +115,11 @@ export default function App() {
     }
 
     const handleTouchEnd = (event: TouchEvent) => {
-      if (touchStartY.current === null) return
+      if (touchStartY.current === null || touchNavigationBlocked.current) {
+        touchStartY.current = null
+        touchNavigationBlocked.current = false
+        return
+      }
 
       const endY = event.changedTouches[0]?.clientY
       if (endY === undefined) return
@@ -126,6 +135,7 @@ export default function App() {
       }
 
       touchStartY.current = null
+      touchNavigationBlocked.current = false
     }
 
     window.addEventListener('wheel', handleWheel, { passive: true })
@@ -240,28 +250,6 @@ export default function App() {
     </a>
   </div>
 </div>
-<nav className="main-nav" aria-label="Primary navigation">
-  <a
-    href="https://www.myiclub.com/club/public/fairfaxinvestinggroup"
-    target="_blank"
-  >
-    portal
-  </a>
-
-  <a
-    href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0"
-    target="_blank"
-  >
-    dashboard
-  </a>
-
-  <a
-    href="https://medium.com/@fairfax.investing.group"
-    target="_blank"
-  >
-    reports
-  </a>
-</nav>
       <nav className="main-nav" aria-label="Primary navigation">
         <a href="https://www.myiclub.com/club/public/fairfaxinvestinggroup" target="_blank">portal</a>
         <a href="https://docs.google.com/spreadsheets/d/15dNTf3uMPupanATPo7H9leXFXuRyI_O7v_Coev_tOaU/edit?gid=0#gid=0" target="_blank">dashboard</a>
