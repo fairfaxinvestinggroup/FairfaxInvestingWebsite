@@ -73,6 +73,8 @@ body::after {
 .hero-page {
     display: grid;
     place-items: center;
+    width: 100vw;
+    height: 100vh;
     background: #000;
 }
 
@@ -596,6 +598,8 @@ body::after {
 }
 
 .main {
+    --hero-nav-color: #131313;
+
     position: relative;
     isolation: isolate;
     container-type: size;
@@ -616,9 +620,10 @@ body::after {
 .main::before {
     position: absolute;
     z-index: 0;
-    bottom: -48%;
-    left: -9%;
-    width: 68%;
+    bottom: -36%;
+    left: auto;
+    right: -9%;
+    width: 62%;
     aspect-ratio: 1;
     border-radius: 50%;
     background: radial-gradient(
@@ -708,14 +713,14 @@ body::after {
     position: absolute;
     z-index: 3;
     top: 2.5%;
-    right: 2%;
+    left: 2%;
     display: flex;
     align-items: center;
     gap: min(2.25cqw, 2.75rem);
 }
 
 .main-nav a {
-    color: #131313;
+    color: var(--hero-nav-color);
     font-family: 'FSHaskumo', sans-serif;
     font-size: min(1.25cqw, 1.5rem);
     line-height: 1;
@@ -737,17 +742,18 @@ body::after {
 .title {
     position: absolute;
     z-index: 2;
-    top: 50%;
-    left: 60%;
+    top: 58%;
+    left: 7%;
     width: min(48cqw, 760px);
     margin: 0;
-    transform: translate(-50%, -50%) scaleX(85%);
+    transform: translateY(-50%) scaleX(85%);
+    transform-origin: left center;
     color: #0b2f4f;
     font-family: 'FSHaskumo', sans-serif;
-    font-size: min(7.8cqw, 10rem);
+    font-size: min(6.6cqw, 8.5rem);
     font-weight: 1;
     line-height: 1;
-    text-align: center;
+    text-align: left;
     letter-spacing: -.05em;
     pointer-events: none;
 }
@@ -763,7 +769,7 @@ body::after {
 
     clip-path: circle(
         34cqw at
-        25cqw
+        75cqw
         calc(148cqh - 34cqw)
     );
 
@@ -813,16 +819,17 @@ body::after {
 .portfolio-caption {
     position: absolute;
     z-index: 2;
-    right: 1%;
-    bottom: 2%;
+    top: 79%;
+    left: 7%;
     width: 42%;
     margin: 0;
     color: #131313;
     font-family: 'FSHaskumo', sans-serif;
-    font-size: min(1.8cqw, 2.22rem);
+    /* Optical match for the nav's shorter lowercase letterforms. */
+    font-size: min(1.4cqw, 1.68rem);
     font-weight: 400;
     line-height: 1;
-    text-align: right;
+    text-align: left;
 }
 
 /* ─────────────────────────────────────────────
@@ -834,7 +841,7 @@ body::after {
     z-index: 10;
 
     top: 2.5%;
-    left: 2%;
+    right: 2%;
 
     box-sizing: border-box;
     width: min(24cqw, 380px);
@@ -896,6 +903,7 @@ body::after {
     align-items: center;
 
     width: auto;
+    margin-left: auto;
 
     gap: 0.7rem;
 
@@ -905,7 +913,7 @@ body::after {
     outline: 0;
     background: transparent;
 
-    color: #131313;
+    color: var(--hero-nav-color);
 
     font-family: 'FSHaskumo', sans-serif;
     font-size: min(1.25cqw, 1.5rem);

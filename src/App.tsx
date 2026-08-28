@@ -295,7 +295,7 @@ export default function App() {
         <span className="scroll-label">scroll</span>
       </button>
       <p className="portfolio-caption">
-        ~13,000USD portfolio based in value-investing principals.
+        ~13,000 USD portfolio based in value-investing principals.
       </p>
       <div
         className="particle-overlay particle-overlay--inversion"
@@ -348,9 +348,9 @@ export default function App() {
         >
           <directionalLight position={[5, 7, 3.5]} intensity={6} />
           <group scale={1.25}>
-            <Model position={[-.7, -1.1, 0]} rotation={[0, degToRad(-15), 0]}/>
-            <Model position={[-1.3, -.75, 0]} rotation={[0, degToRad(50), 0]}/>
-            <Model position={[-.77, -.2, 0]} rotation={[0, degToRad(-15), 0]}/>
+            <Model position={[.95, -1.1, 0]} rotation={[0, degToRad(-15), 0]}/>
+            <Model position={[.35, -.75, 0]} rotation={[0, degToRad(50), 0]}/>
+            <Model position={[.88, -.2, 0]} rotation={[0, degToRad(-15), 0]}/>
           </group>
 
           <EffectComposer multisampling={0}>
