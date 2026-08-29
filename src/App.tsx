@@ -208,7 +208,7 @@ export default function App() {
           <div className="top-disc" aria-hidden="true" />
           <aside className={`graph-drawer${graphOpen ? ' is-open' : ''}`}>
             <div className="graph-drawer-frame">
-              <img src={`${BASE_URL}images/graph-return.svg`} alt="Portfolio return graph" />
+              <img src={`${BASE_URL}images/graph%20return.svg`} alt="Portfolio return graph" />
             </div>
             <button
               type="button"
